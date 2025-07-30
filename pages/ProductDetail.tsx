@@ -33,6 +33,7 @@ export default function ProductDetail({
           display: 'flex',
           justifyContent: 'center',
           flexDirection: 'row',
+          marginTop:11
         }}
       >
         <Image
