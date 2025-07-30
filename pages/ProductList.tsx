@@ -11,20 +11,21 @@ import { RootStackParamList } from '../App';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
+import { Image } from 'react-native';
 
-type DetailsScreenRouteProp = RouteProp<RootStackParamList, 'Detay'>;
-type DetailsScreenNavigationProp = StackNavigationProp<
+type ProductListRouteProp = RouteProp<RootStackParamList, 'Detay'>;
+type ProductListNavigationProp = StackNavigationProp<
   RootStackParamList,
   'Detay'
 >;
 
-export default function DetailsScreen({
+export default function ProductList({
   route,
 }: {
-  route: DetailsScreenRouteProp;
+  route: ProductListRouteProp;
 }) {
   const { monthId } = route.params;
-  const navigation = useNavigation<DetailsScreenNavigationProp>();
+  const navigation = useNavigation<ProductListNavigationProp>();
 
   const [product, setProduct] = useState<any[]>([]);
   const [monthDetail, setMonthDetail] = useState<any>();
@@ -61,8 +62,8 @@ export default function DetailsScreen({
 
   return (
     <View style={{ flex: 1, padding: 20 }}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center' }}>
-        {monthDetail?.monthNameTr}
+      <Text style={{ fontSize: 18 }}>
+         <Text style={{ fontWeight:"bold" }}>{monthDetail?.monthNameTr}</Text> ayında ekilebilecekler
       </Text>
       <View
         style={{ height: 2, backgroundColor: '#ccc', marginVertical: 10 }}
@@ -73,6 +74,8 @@ export default function DetailsScreen({
         renderItem={({ item }) => (
           <TouchableOpacity
             style={{
+              flexDirection: 'row',
+              alignItems: 'center',
               padding: 15,
               marginVertical: 8,
               backgroundColor: '#eee',
@@ -80,6 +83,10 @@ export default function DetailsScreen({
             }}
             onPress={() => navigation.navigate('Ürün', { productId: item.id })}
           >
+            <Image
+              source={require('../assets/listResim.png')}
+              style={{ width: 24, height: 24, marginRight: 10 }}
+            />
             <Text style={{ fontSize: 18 }}>{item?.productNameTr}</Text>
           </TouchableOpacity>
         )}

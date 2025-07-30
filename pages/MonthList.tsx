@@ -11,20 +11,21 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
 import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const numColumns = 3;
 const screenWidth = Dimensions.get('window').width;
 const itemWidth = screenWidth / numColumns - 20;
 
-type HomeScreenNavigationProp = StackNavigationProp<
+type MonthListNavigationProp = StackNavigationProp<
   RootStackParamList,
   'Aylar'
 >;
 
-export default function HomeScreen({
+export default function MonthList({
   navigation,
 }: {
-  navigation: HomeScreenNavigationProp;
+  navigation: MonthListNavigationProp;
 }) {
   const [months, setMonths] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -52,10 +53,9 @@ export default function HomeScreen({
       <FlatList
         data={months}
         numColumns={numColumns}
-        keyExtractor={(item: any) => item}
+        keyExtractor={(item: any) => item?.id}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         renderItem={(item: any) => {
-          console.log(item);
           return (
             <TouchableOpacity
               style={{
@@ -68,8 +68,7 @@ export default function HomeScreen({
               }}
               onPress={() =>
                 navigation.navigate('Detay', { monthId: item?.item?.id })
-              }
-            >
+              }>
               <Text style={{ fontSize: 18 }}>{item?.item?.monthNameTr}</Text>
             </TouchableOpacity>
           );

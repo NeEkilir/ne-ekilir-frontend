@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../App';
 import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
 
-type ProductScreenRouteProp = RouteProp<RootStackParamList, 'Ürün'>;
+type ProductDetailRouteProp = RouteProp<RootStackParamList, 'Ürün'>;
 
-export default function ProductScreen({
+export default function ProductDetail({
   route,
 }: {
-  route: ProductScreenRouteProp;
+  route: ProductDetailRouteProp;
 }) {
   const { productId } = route.params;
   const [productDetail, setProductDetail] = useState<any>();
@@ -28,9 +28,19 @@ export default function ProductScreen({
 
   return (
     <View style={{ flex: 1 }}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center' }}>
-        {productDetail?.productNameTr}
-      </Text>
+      <View
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'row',
+        }}
+      >
+        <Image
+          source={require('../assets/listResim.png')}
+          style={{ width: 24, height: 24, marginTop: 5, marginRight: 8 }}
+        />
+        <Text style={{ fontSize: 24 }}>{productDetail?.productNameTr}</Text>
+      </View>
       <View
         style={{ height: 2, backgroundColor: '#ccc', marginVertical: 10 }}
       />
