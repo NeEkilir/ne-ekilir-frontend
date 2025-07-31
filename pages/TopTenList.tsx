@@ -43,11 +43,29 @@ export default function TopTenList({ route }: { route: TopTenListRouteProp }) {
               borderColor: '#ddd',
             }}
           >
-            <Text style={{ fontSize: 18, fontWeight: 'bold', width: 30 }}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                width: 30,
+                color: index + 1 === 1 ? 'green' : '',
+              }}
+            >
               {index + 1}.
             </Text>
-            <Text style={{ fontSize: 18 }}>
-              {item?.productName + ' - ' + item?.avgRate}
+            <Text
+              style={{ fontSize: 18, color: index + 1 === 1 ? 'green' : '' }}
+            >
+              <Text>
+                <Text>{item?.productName + ' - '}</Text>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {item?.avgRate}
+                </Text>
+              </Text>
             </Text>
           </View>
         )}

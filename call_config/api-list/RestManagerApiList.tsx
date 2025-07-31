@@ -52,7 +52,7 @@ const RestManagerApiList: IPathModel = {
     description: 'get product top ten list',
   },
   PRODUCT_AVG_RATE: {
-    url: 'rating/productRate/[id}',
+    url: 'rating/productRate/{id}',
     method: MethodTypes.GET,
     module: moduleProje.REST_MAN,
     description: 'get product get avg rate',

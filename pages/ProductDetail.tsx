@@ -33,6 +33,17 @@ export default function ProductDetail({
   }, []);
 
   useEffect(() => {
+    tAxios
+      .call({
+        api: RestManagerApiList.PRODUCT_AVG_RATE,
+        pathVariable: { id: productId },
+      })
+      .then((res: any) => {
+        setProductAVGRate(res);
+      });
+  }, [rating]);
+
+  useEffect(() => {
     if (!rating) {
       tAxios
         .call({
@@ -126,6 +137,46 @@ export default function ProductDetail({
           </TouchableOpacity>
         ))}
       </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+          marginVertical: 10,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 16,
+            color: '#555',
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: -20,
+          }}
+        >
+          {productAVGRate?.avgRate ? (
+            <Text>
+              <Text>{'Ort. Puan:'}</Text>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                }}
+              >
+                {productAVGRate?.avgRate}
+              </Text>
+            </Text>
+          ) : (
+            ''
+          )}
+        </Text>
+      </View>
+      <View
+        style={{
+          height: 2,
+          backgroundColor: '#ccc',
+          marginVertical: 10,
+          marginRight: 10,
+        }}
+      />
     </View>
   );
 }
