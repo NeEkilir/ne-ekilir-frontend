@@ -57,7 +57,7 @@ export default function TopTenList({ route }: { route: TopTenListRouteProp }) {
               style={{ fontSize: 18, color: index + 1 === 1 ? 'green' : '' }}
             >
               <Text>
-                <Text>{item?.productName + ' - '}</Text>
+                <Text>{item?.productName + ' | '}</Text>
                 <Text
                   style={{
                     fontWeight: 'bold',
