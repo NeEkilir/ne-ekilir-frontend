@@ -12,15 +12,13 @@ import { RootStackParamList } from '../App';
 import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const numColumns = 3;
 const screenWidth = Dimensions.get('window').width;
 const itemWidth = screenWidth / numColumns - 20;
 
-type MonthListNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Aylar'
->;
+type MonthListNavigationProp = StackNavigationProp<RootStackParamList, 'Aylar'>;
 
 export default function MonthList({
   navigation,
@@ -68,12 +66,28 @@ export default function MonthList({
               }}
               onPress={() =>
                 navigation.navigate('Detay', { monthId: item?.item?.id })
-              }>
+              }
+            >
               <Text style={{ fontSize: 18 }}>{item?.item?.monthNameTr}</Text>
             </TouchableOpacity>
           );
         }}
       />
+      <TouchableOpacity
+        style={{
+          backgroundColor: '#60af4cff',
+          paddingVertical: 6,
+          paddingHorizontal: 10,
+          borderRadius: 6,
+          marginBottom: 50,
+        }}
+        onPress={() => navigation.navigate('Top 10')}
+      >
+        <Text style={{ color: 'white', fontSize: 14, textAlign: 'center' }}>
+          <Icon name={'star'} color={'#ffffff'} />
+          Top 10 Listesi
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }

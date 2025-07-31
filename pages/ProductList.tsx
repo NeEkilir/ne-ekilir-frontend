@@ -26,7 +26,6 @@ export default function ProductList({
 }) {
   const { monthId } = route.params;
   const navigation = useNavigation<ProductListNavigationProp>();
-
   const [product, setProduct] = useState<any[]>([]);
   const [monthDetail, setMonthDetail] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -38,7 +37,11 @@ export default function ProductList({
         pathVariable: { id: monthId },
       })
       .then((res: any) => {
-        setProduct(res);
+        setProduct(
+          res.sort((a:any, b:any) =>
+            a.productNameTr.localeCompare(b.productNameTr, 'tr', { sensitivity: 'base' }),
+          ),
+        );
       })
       .finally(() => setLoading(false));
   }, []);
@@ -63,7 +66,8 @@ export default function ProductList({
   return (
     <View style={{ flex: 1, padding: 20 }}>
       <Text style={{ fontSize: 18 }}>
-         <Text style={{ fontWeight:"bold" }}>{monthDetail?.monthNameTr}</Text> ayında ekilebilecekler
+        <Text style={{ fontWeight: 'bold' }}>{monthDetail?.monthNameTr}</Text>{' '}
+        ayında ekilebilecekler
       </Text>
       <View
         style={{ height: 2, backgroundColor: '#ccc', marginVertical: 10 }}
@@ -72,7 +76,7 @@ export default function ProductList({
         data={product}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity
+          <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
@@ -80,15 +84,35 @@ export default function ProductList({
               marginVertical: 8,
               backgroundColor: '#eee',
               borderRadius: 8,
+              justifyContent: 'space-between',
             }}
-            onPress={() => navigation.navigate('Ürün', { productId: item.id })}
           >
-            <Image
-              source={require('../assets/listResim.png')}
-              style={{ width: 24, height: 24, marginRight: 10 }}
-            />
-            <Text style={{ fontSize: 18 }}>{item?.productNameTr}</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={{ flexDirection: 'row', alignItems: 'center' }}
+            >
+              <Image
+                source={require('../assets/listResim.png')}
+                style={{ width: 24, height: 24, marginRight: 10 }}
+              />
+              <Text style={{ fontSize: 18 }}>{item?.productNameTr}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#4CAF50',
+                paddingVertical: 6,
+                paddingHorizontal: 10,
+                borderRadius: 6,
+              }}
+              onPress={() =>
+                navigation.navigate('Ürün', { productId: item.id })
+              }
+            >
+              <Text style={{ color: 'white', fontSize: 14 }}>
+                Nasıl Ekilir?
+              </Text>
+            </TouchableOpacity>
+          </View>
         )}
       />
     </View>
