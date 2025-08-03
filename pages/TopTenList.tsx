@@ -54,7 +54,17 @@ export default function TopTenList({ route }: { route: TopTenListRouteProp }) {
               {index + 1}.
             </Text>
             <Text
-              style={{ fontSize: 18, color: index + 1 === 1 ? 'green' : '' }}
+              style={{
+                fontSize: 18,
+                color:
+                  index + 1 === 1
+                    ? '#006600'
+                    : index + 1 === 2
+                    ? '#009900'
+                    : index + 1 === 3
+                    ? '#00CC00'
+                    : '',
+              }}
             >
               <Text>
                 <Text>{item?.productName + ' | '}</Text>

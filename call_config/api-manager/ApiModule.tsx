@@ -6,7 +6,7 @@ export const moduleProje: IModuleModel = {
   REST_MAN: {
     name: 'Rest Services',
     acronym: 'RESM',
-    contextPath: '/',
+    contextPath: '',
     baseUrl: baseUrl,
     description: 'Rest Manager',
   },
