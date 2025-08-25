@@ -49,14 +49,14 @@ export default function ProductDetail({
             }}
           >
             <Text style={{ color: '#fff', fontSize: 14, fontWeight: 'bold' }}>
-              Yorum Yap
+              + Yorum Yap
             </Text>
           </TouchableOpacity>
         ),
       });
     }
   }, [navigation]);
-  console.log(commentList);
+
   useEffect(() => {
     tAxios
       .call({
@@ -218,21 +218,40 @@ export default function ProductDetail({
               </Text>
             </Text>
           ) : (
-            ''
+            <Text>
+              <Text>{'Ort. Puan:'}</Text>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                }}
+              >
+                {0}
+              </Text>
+            </Text>
           )}
         </Text>
       </View>
+      {commentList?.length ? (
+        <Text
+          style={{
+            fontWeight: 'bold',
+            fontSize: 18,
+            marginBottom: 0,
+            paddingLeft: 8,
+          }}
+        >
+          Yorumlar
+        </Text>
+      ) : (
+        <></>
+      )}
       <View
         style={{
           height: 2,
           backgroundColor: '#ccc',
           marginVertical: 10,
-          marginRight: 10,
         }}
       />
-      <Text style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 10 }}>
-        Yorumlar
-      </Text>
       <FlatList
         data={commentList}
         keyExtractor={(item, index) => index.toString()}
@@ -252,7 +271,7 @@ export default function ProductDetail({
             }}
           >
             <Text
-              style={{ fontSize: 15, fontStyle: 'italic', marginBottom: 6 }}
+              style={{ fontSize: 15, fontStyle: 'italic', marginBottom: 5 }}
             >
               {item?.commentHeader}
             </Text>
@@ -261,7 +280,7 @@ export default function ProductDetail({
                 justifyContent: 'flex-start',
               }}
             >
-              <Text style={{ fontSize: 13, color: '#777' }}>
+              <Text style={{ fontSize: 14, color: '#777' }}>
                 {item?.commentDetail}
               </Text>
             </View>
@@ -270,15 +289,16 @@ export default function ProductDetail({
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                marginTop: 5,
               }}
             >
-              <Text style={{ fontSize: 13, color: '#777' }}>
+              <Text style={{ fontSize: 10, color: '#777' }}>
                 Kullanıcı:{' '}
                 <Text style={{ fontStyle: 'italic' }}>
                   {item.userId?.userName}
                 </Text>
               </Text>
-              <Text style={{ fontSize: 12, color: '#999' }}>
+              <Text style={{ fontSize: 10, color: '#999' }}>
                 {item.createTime &&
                   format(new Date(item.createTime), 'dd.MM.yyyy HH:mm')}
               </Text>
@@ -286,6 +306,7 @@ export default function ProductDetail({
           </View>
         )}
       />
+
       {isShowCommentModal && (
         <AddCommentModal
           show={isShowCommentModal}
