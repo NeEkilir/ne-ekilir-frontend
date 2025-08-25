@@ -28,11 +28,34 @@ export default function ProductList({
   route: ProductListRouteProp;
 }) {
   const { monthId } = route.params;
-  const navigation = useNavigation<ProductListNavigationProp>();
   const [product, setProduct] = useState<any[]>([]);
   const [monthDetail, setMonthDetail] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
   const [isShowRequestModal, setIsShowRequestModal] = useState<any>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => {
+            setIsShowRequestModal(true);
+          }}
+          style={{
+            backgroundColor: '#4CAF50',
+            paddingVertical: 6,
+            paddingHorizontal: 12,
+            borderRadius: 8,
+            marginRight: 10,
+          }}
+        >
+          <Text style={{ color: '#fff', fontSize: 14, fontWeight: 'bold' }}>
+           + Ekle
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   useEffect(() => {
     tAxios
@@ -82,24 +105,6 @@ export default function ProductList({
           <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
             {monthDetail?.monthNameTr} ayı ekilebilecekler
           </Text>
-
-          <View style={{ alignItems: 'center' }}>
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#4CAF50',
-                paddingVertical: 8,
-                paddingHorizontal: 16,
-                borderRadius: 4,
-              }}
-              onPress={() => setIsShowRequestModal(true)}
-            >
-              <Text style={{ color: 'white', fontWeight: 'bold' }}>+ EKLE</Text>
-            </TouchableOpacity>
-
-            <Text style={{ fontSize: 10, color: '#555', marginTop: 4 }}>
-              Eksik bilgileri eklemek için tıklayınız
-            </Text>
-          </View>
         </View>
         <View
           style={{ height: 2, backgroundColor: '#ccc', marginVertical: 10 }}
@@ -126,9 +131,10 @@ export default function ProductList({
                   source={require('../assets/listResim.png')}
                   style={{ width: 24, height: 24, marginRight: 10 }}
                 />
-                <Text style={{ fontSize: 18 }}>{item?.productNameTr}</Text>
+                <Text style={{ fontSize: 18 }}>
+                  {item?.productNameTr || ''}
+                </Text>
               </TouchableOpacity>
-
               <TouchableOpacity
                 style={{
                   backgroundColor: '#4CAF50',
@@ -136,9 +142,9 @@ export default function ProductList({
                   paddingHorizontal: 10,
                   borderRadius: 6,
                 }}
-                onPress={() =>
-                  navigation.navigate('Ürün', { productId: item.id })
-                }
+                onPress={() => {
+                  navigation.navigate('Ürün', { productId: item.id });
+                }}
               >
                 <Text style={{ color: 'white', fontSize: 14 }}>
                   Nasıl Ekilir?

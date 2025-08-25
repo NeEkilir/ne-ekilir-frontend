@@ -1,11 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  FlatList,
+} from 'react-native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../App';
 import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
 import { AirbnbRating, Rating } from 'react-native-ratings';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { AddCommentModal } from './modal/AddCommentModal';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { format, parse } from 'date-fns';
 
 type ProductDetailRouteProp = RouteProp<RootStackParamList, 'Ürün'>;
 
@@ -18,9 +28,35 @@ export default function ProductDetail({
   const [productDetail, setProductDetail] = useState<any>();
   const [rating, setRating] = useState<any>();
   const [productAVGRate, setProductAVGRate] = useState<any>();
+  const [isShowCommentModal, setIsShowCommentModal] = useState<any>();
+  const [commentList, setCommentList] = useState<any>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const userId = 2;
 
+  useEffect(() => {
+    if (navigation) {
+      navigation.setOptions({
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => setIsShowCommentModal(true)}
+            style={{
+              backgroundColor: '#4CAF50',
+              paddingVertical: 6,
+              paddingHorizontal: 12,
+              borderRadius: 8,
+              marginRight: 10,
+            }}
+          >
+            <Text style={{ color: '#fff', fontSize: 14, fontWeight: 'bold' }}>
+              Yorum Yap
+            </Text>
+          </TouchableOpacity>
+        ),
+      });
+    }
+  }, [navigation]);
+  console.log(commentList);
   useEffect(() => {
     tAxios
       .call({
@@ -78,6 +114,23 @@ export default function ProductDetail({
         });
     }
   };
+
+  const getCommentList = (productId: any) => {
+    tAxios
+      .call({
+        api: RestManagerApiList.GET_COMMENT_LIST,
+        pathVariable: { id: productId },
+      })
+      .then((res: any) => {
+        setCommentList(res);
+      });
+  };
+
+  useEffect(() => {
+    if (productId) {
+      getCommentList(productId);
+    }
+  }, [productId]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -177,6 +230,70 @@ export default function ProductDetail({
           marginRight: 10,
         }}
       />
+      <Text style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 10 }}>
+        Yorumlar
+      </Text>
+      <FlatList
+        data={commentList}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View
+            key={item?.id}
+            style={{
+              backgroundColor: '#fff',
+              borderRadius: 8,
+              padding: 10,
+              marginBottom: 10,
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.1,
+              shadowRadius: 3,
+              elevation: 2,
+            }}
+          >
+            <Text
+              style={{ fontSize: 15, fontStyle: 'italic', marginBottom: 6 }}
+            >
+              {item?.commentHeader}
+            </Text>
+            <View
+              style={{
+                justifyContent: 'flex-start',
+              }}
+            >
+              <Text style={{ fontSize: 13, color: '#777' }}>
+                {item?.commentDetail}
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={{ fontSize: 13, color: '#777' }}>
+                Kullanıcı:{' '}
+                <Text style={{ fontStyle: 'italic' }}>
+                  {item.userId?.userName}
+                </Text>
+              </Text>
+              <Text style={{ fontSize: 12, color: '#999' }}>
+                {item.createTime &&
+                  format(new Date(item.createTime), 'dd.MM.yyyy HH:mm')}
+              </Text>
+            </View>
+          </View>
+        )}
+      />
+      {isShowCommentModal && (
+        <AddCommentModal
+          show={isShowCommentModal}
+          onClose={() => setIsShowCommentModal(false)}
+          productId={productId}
+          getCommentList={getCommentList}
+        />
+      )}
     </View>
   );
 }

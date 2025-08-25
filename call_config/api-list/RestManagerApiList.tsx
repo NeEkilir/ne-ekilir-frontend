@@ -63,6 +63,18 @@ const RestManagerApiList: IPathModel = {
     module: moduleProje.REST_MAN,
     description: 'save request',
   },
+  SAVE_COMMENT: {
+    url: '/comment/save',
+    method: MethodTypes.POST,
+    module: moduleProje.REST_MAN,
+    description: 'save comment',
+  },
+  GET_COMMENT_LIST: {
+    url: '/comment/list/{id}',
+    method: MethodTypes.GET,
+    module: moduleProje.REST_MAN,
+    description: 'get comment list by product id',
+  },
 };
 
 export { RestManagerApiList };
