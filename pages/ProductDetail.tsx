@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { AddCommentModal } from './modal/AddCommentModal';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { format, parse } from 'date-fns';
+import { AddProfileProductModal } from './modal/AddProfileProductModal';
 
 type ProductDetailRouteProp = RouteProp<RootStackParamList, 'Ürün'>;
 
@@ -29,6 +30,7 @@ export default function ProductDetail({
   const [rating, setRating] = useState<any>();
   const [productAVGRate, setProductAVGRate] = useState<any>();
   const [isShowCommentModal, setIsShowCommentModal] = useState<any>();
+  const [isShowAddProfileModal, setIsShowAddProfileModal] = useState<any>();
   const [commentList, setCommentList] = useState<any>();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
@@ -154,19 +156,34 @@ export default function ProductDetail({
           backgroundColor: '#ccc',
           marginVertical: 10,
           marginRight: 10,
+          display: 'flex',
+          justifyContent: 'space-between',
         }}
       />
-      <Text
+      <View
         style={{
-          fontWeight: 'bold',
-          fontSize: 17,
-          marginBottom: -2,
-          marginLeft: 10,
-          marginRight: 10,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginVertical: 8,
+          paddingHorizontal: 10,
         }}
       >
-        Nasıl Ekilir?
-      </Text>
+        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Nasıl Ekilir?</Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#4CAF50',
+            paddingVertical: 6,
+            paddingHorizontal: 12,
+            borderRadius: 6,
+          }}
+          onPress={() => setIsShowAddProfileModal(true)}
+        >
+          <Text style={{ color: 'white', fontWeight: '600' }}>
+            + Profile Ekle
+          </Text>
+        </TouchableOpacity>
+      </View>
       <Text
         style={{ fontSize: 16, color: '#555', marginLeft: 10, marginRight: 10 }}
       >
@@ -306,7 +323,13 @@ export default function ProductDetail({
           </View>
         )}
       />
-
+      {isShowAddProfileModal && (
+        <AddProfileProductModal
+          show={isShowAddProfileModal}
+          onClose={() => setIsShowAddProfileModal(false)}
+          productId={productId}
+        />
+      )}
       {isShowCommentModal && (
         <AddCommentModal
           show={isShowCommentModal}

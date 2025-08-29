@@ -29,7 +29,15 @@ export default function MonthList({
 }) {
   const [months, setMonths] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [dailyPlanting, setDailyPlanting] = useState<any>();
 
+  useEffect(() => {
+    tAxios
+      .call({ api: RestManagerApiList.GET_DAILY_PLANTING })
+      .then((res: any) => setDailyPlanting(res));
+  }, []);
+
+  console.log(dailyPlanting);
   useEffect(() => {
     if (navigation) {
       navigation.setOptions({
@@ -102,12 +110,12 @@ export default function MonthList({
           </TouchableOpacity>
         ))}
       </View>
-      <View style={styles.suggestionCard}>
-        <Text style={styles.suggestionTitle}>🌿 Bugün İçin Öneri</Text>
-        <Text style={styles.suggestionText2}>
-          Bu mevsimde marul, ıspanak ve roka ekimi için uygun!
-        </Text>
-      </View>
+      {dailyPlanting && (
+        <View style={styles.suggestionCard}>
+          <Text style={styles.suggestionTitle}>🌿 Bugün İçin Öneri</Text>
+          <Text style={styles.suggestionText2}>{dailyPlanting}</Text>
+        </View>
+      )}
     </ScrollView>
   );
 }

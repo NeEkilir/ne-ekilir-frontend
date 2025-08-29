@@ -75,6 +75,24 @@ const RestManagerApiList: IPathModel = {
     module: moduleProje.REST_MAN,
     description: 'get comment list by product id',
   },
+  ADD_PROFILE_PRODUCT: {
+    url: '/user-product/add-profile',
+    method: MethodTypes.POST,
+    module: moduleProje.REST_MAN,
+    description: 'add profile product',
+  },
+  GET_PROFILE_PRODUCT: {
+    url: '/user-product/get-user-product-list/{user_id}',
+    method: MethodTypes.GET,
+    module: moduleProje.REST_MAN,
+    description: 'get profile product list',
+  },
+  GET_DAILY_PLANTING: {
+    url: '/product/get-daily-planting ',
+    method: MethodTypes.GET,
+    module: moduleProje.REST_MAN,
+    description: 'get daily planting',
+  },
 };
 
 export { RestManagerApiList };
