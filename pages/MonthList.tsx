@@ -13,7 +13,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
 import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
-import styles from '../style/MonthListStyle'; // dosya yolunu ayarla
+import styles from '../style/MonthListStyle';  
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const numColumns = 3;
@@ -37,7 +37,6 @@ export default function MonthList({
       .then((res: any) => setDailyPlanting(res));
   }, []);
 
-  console.log(dailyPlanting);
   useEffect(() => {
     if (navigation) {
       navigation.setOptions({
@@ -62,7 +61,7 @@ export default function MonthList({
         headerRight: () => (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Profile');
+              navigation.navigate('Ekim Takvimi');
             }}
             style={{
               backgroundColor: styles.title.color,
@@ -72,7 +71,7 @@ export default function MonthList({
               marginRight: 10,
             }}
           >
-            <Icon name={'user'} color={styles.monthCard.backgroundColor} />
+            <Icon name={'calendar'} color={styles.monthCard.backgroundColor} />
           </TouchableOpacity>
         ),
       });

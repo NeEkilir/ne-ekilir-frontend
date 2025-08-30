@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import axios from 'axios';
 import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
 import { RootStackParamList } from '../App';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 
 type TopTenListRouteProp = RouteProp<RootStackParamList, 'Top 10'>;
 type TopTenListNavigationProp = StackNavigationProp<
@@ -15,6 +21,7 @@ type TopTenListNavigationProp = StackNavigationProp<
 
 export default function TopTenList({ route }: { route: TopTenListRouteProp }) {
   const [topTenProducts, setTopTenProducts] = useState<any[]>([]);
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   useEffect(() => {
     tAxios
@@ -24,12 +31,16 @@ export default function TopTenList({ route }: { route: TopTenListRouteProp }) {
       .then((res: any) => setTopTenProducts(res));
   }, []);
 
+  useEffect(() => {
+    if (navigation) {
+      navigation.setOptions({
+        headerTitle: '🔥 En Popüler 10 Ürün',
+      });
+    }
+  }, [navigation]);
+
   return (
     <View style={{ flex: 1, padding: 20 }}>
-      <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 15 }}>
-        🔥 En Popüler 10 Ürün
-      </Text>
-
       <FlatList
         data={topTenProducts}
         keyExtractor={(item, index) => index.toString()}

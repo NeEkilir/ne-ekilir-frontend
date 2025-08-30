@@ -82,7 +82,7 @@ const RestManagerApiList: IPathModel = {
     description: 'add profile product',
   },
   GET_PROFILE_PRODUCT: {
-    url: '/user-product/get-user-product-list/{user_id}',
+    url: '/user-product/get-user-product-list/{userId}',
     method: MethodTypes.GET,
     module: moduleProje.REST_MAN,
     description: 'get profile product list',

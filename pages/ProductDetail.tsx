@@ -180,7 +180,7 @@ export default function ProductDetail({
           onPress={() => setIsShowAddProfileModal(true)}
         >
           <Text style={{ color: 'white', fontWeight: '600' }}>
-            + Profile Ekle
+            + Ekildi
           </Text>
         </TouchableOpacity>
       </View>
@@ -328,6 +328,7 @@ export default function ProductDetail({
           show={isShowAddProfileModal}
           onClose={() => setIsShowAddProfileModal(false)}
           productId={productId}
+          name={productDetail?.productNameTr}
         />
       )}
       {isShowCommentModal && (

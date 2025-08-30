@@ -6,14 +6,14 @@ import ProductList from './pages/ProductList';
 import { setupAxiosInterceptors } from './call_config';
 import ProductDetail from './pages/ProductDetail';
 import TopTenList from './pages/TopTenList';
-import Profile from './pages/Profile';
+import PlantingCalendar from './pages/PlantingCalendar';
 
 export type RootStackParamList = {
   Aylar: undefined;
   Detay: { monthId: string };
   Ürün: { productId: string };
   'Top 10': undefined;
-  Profile: undefined;
+  'Ekim Takvimi': undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -32,7 +32,7 @@ export default function App() {
         <Stack.Screen name="Detay" component={ProductList} />
         <Stack.Screen name="Ürün" component={ProductDetail} />
         <Stack.Screen name="Top 10" component={TopTenList} />
-        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="Ekim Takvimi" component={PlantingCalendar} />
       </Stack.Navigator>
     </NavigationContainer>
   );

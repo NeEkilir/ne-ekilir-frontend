@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Platform,
   Button,
+  TextInput,
 } from 'react-native';
 import { tAxios } from '../../call_config';
 import { RestManagerApiList } from '../../call_config/api-list/RestManagerApiList';
@@ -15,6 +16,7 @@ interface AddProfileProductModalInterface {
   show: any;
   onClose: any;
   productId: any;
+  name: string;
 }
 
 export const AddProfileProductModal = (
@@ -22,6 +24,7 @@ export const AddProfileProductModal = (
 ) => {
   const [date, setDate] = useState<Date>(new Date());
   const [showPicker, setShowPicker] = useState(false);
+  const [aliasName, setAliasName] = useState<any>('');
 
   const userId = 2;
 
@@ -33,6 +36,7 @@ export const AddProfileProductModal = (
           userId: userId,
           productId: props?.productId,
           plantingDate: date.toISOString().split('T')[0],
+          aliasName: aliasName,
         },
       })
       .then(() => {
@@ -72,9 +76,27 @@ export const AddProfileProductModal = (
             width: '85%',
           }}
         >
+          <Text style={{ fontSize: 16, marginBottom: 10, textAlign: 'center' }}>
+            {props?.name}
+          </Text>
+          <TextInput
+            placeholder="Takma adı giriniz.."
+            multiline
+            value={aliasName}
+            onChangeText={setAliasName}
+            style={{
+              borderWidth: 1,
+              borderColor: '#ccc',
+              borderRadius: 6,
+              padding: 10,
+              height: 60,
+              textAlignVertical: 'top',
+              marginBottom: 15,
+            }}
+          />
           <TouchableOpacity
             style={{
-              backgroundColor: '#4CAF50',  
+              backgroundColor: '#4CAF50',
               paddingVertical: 10,
               paddingHorizontal: 20,
               borderRadius: 8,
@@ -86,7 +108,6 @@ export const AddProfileProductModal = (
               Ekim tarihi seçiniz..
             </Text>
           </TouchableOpacity>
-
           {showPicker && (
             <DateTimePicker
               value={date}
@@ -95,11 +116,9 @@ export const AddProfileProductModal = (
               onChange={onChange}
             />
           )}
-
-          <Text style={{ marginVertical: 10, fontSize: 16 }}>
+          <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>
             Seçilen Tarih: {date.toLocaleDateString()}
           </Text>
-
           <View
             style={{
               flexDirection: 'row',
@@ -122,11 +141,13 @@ export const AddProfileProductModal = (
 
             <TouchableOpacity
               style={{
-                backgroundColor: '#4CAF50',
+                backgroundColor:
+                  aliasName?.trim() === '' ? '#A5D6A7' : '#4CAF50',
                 paddingVertical: 8,
                 paddingHorizontal: 16,
                 borderRadius: 6,
               }}
+              disabled={!aliasName}
               onPress={onSave}
             >
               <Text style={{ color: 'white', fontWeight: 'bold' }}>Kaydet</Text>
