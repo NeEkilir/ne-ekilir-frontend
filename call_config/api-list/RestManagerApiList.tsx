@@ -93,6 +93,18 @@ const RestManagerApiList: IPathModel = {
     module: moduleProje.REST_MAN,
     description: 'get daily planting',
   },
+  REFRESH_TOKEN: {
+    url: '/user/refresh',
+    method: MethodTypes.POST,
+    module: moduleProje.REST_MAN,
+    description: 'refresh token',
+  },
+  LOGIN: {
+    url: '/user/login',
+    method: MethodTypes.POST,
+    module: moduleProje.REST_MAN,
+    description: 'login',
+  },
 };
 
 export { RestManagerApiList };

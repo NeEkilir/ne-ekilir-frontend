@@ -33,7 +33,7 @@ export const PlantingDetailModal = (props: PlantingDetailModalInterface) => {
           <Text style={{ fontSize: 16, marginBottom: 5 }}>
             {props.data?.productId?.productNameTr +
               ' (' +
-              props?.data?.aliasName +
+              (props?.data?.aliasName ? props?.data?.aliasName : '--') +
               ')'}
           </Text>
           <View

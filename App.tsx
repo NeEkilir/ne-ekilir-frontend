@@ -7,6 +7,10 @@ import { setupAxiosInterceptors } from './call_config';
 import ProductDetail from './pages/ProductDetail';
 import TopTenList from './pages/TopTenList';
 import PlantingCalendar from './pages/PlantingCalendar';
+import { getTokens } from './utils/SecureStorage';
+import Login from './pages/Login';
+import { ActivityIndicator } from 'react-native';
+import SplashPage from './pages/SplashPage';
 
 export type RootStackParamList = {
   Aylar: undefined;
@@ -14,25 +18,48 @@ export type RootStackParamList = {
   Ürün: { productId: string };
   'Top 10': undefined;
   'Ekim Takvimi': undefined;
+  Login: undefined;
+  Splash: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App() {
-  const [loading, setLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<any>();
 
   useEffect(() => {
-    setupAxiosInterceptors(setLoading);
+    setupAxiosInterceptors();
+
+    const checkLogin = async () => {
+      const tokens = await getTokens();
+      setIsLoggedIn(tokens?.accessToken ? true : false);
+    };
+
+    checkLogin();
   }, []);
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Aylar" component={MonthList} />
-        <Stack.Screen name="Detay" component={ProductList} />
-        <Stack.Screen name="Ürün" component={ProductDetail} />
-        <Stack.Screen name="Top 10" component={TopTenList} />
-        <Stack.Screen name="Ekim Takvimi" component={PlantingCalendar} />
+        {isLoggedIn ? (
+          <>
+            <Stack.Screen name="Aylar" component={MonthList} />
+            <Stack.Screen name="Detay" component={ProductList} />
+            <Stack.Screen name="Ürün" component={ProductDetail} />
+            <Stack.Screen name="Top 10" component={TopTenList} />
+            <Stack.Screen name="Ekim Takvimi" component={PlantingCalendar} />
+          </>
+        ) : isLoggedIn === false ? (
+          <Stack.Screen name="Login" options={{ headerShown: false }}>
+            {props => <Login {...props} setIsLoggedIn={setIsLoggedIn} />}
+          </Stack.Screen>
+        ) : (
+          <Stack.Screen
+            name="Splash"
+            component={SplashPage}
+            options={{ headerShown: false }}
+          />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

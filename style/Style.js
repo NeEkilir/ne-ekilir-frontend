@@ -48,6 +48,8 @@ export default StyleSheet.create({
   suggestionCard: {
     backgroundColor: 'white',
     padding: 20,
+    marginRight: 15,
+    marginLeft: 15,
     borderRadius: 20,
     marginTop: 10,
     shadowColor: '#000',
@@ -64,5 +66,33 @@ export default StyleSheet.create({
   suggestionText2: {
     fontSize: 15,
     color: '#333',
+  },
+  logincontainer: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  logintitle: {
+    fontSize: 24,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  logininput: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    padding: 10,
+    marginBottom: 15,
+    borderRadius: 8,
+  },
+  loginbutton: {
+    backgroundColor: '#333',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  loginbuttonText: {
+    color: '#fff',
+    fontSize: 16,
   },
 });

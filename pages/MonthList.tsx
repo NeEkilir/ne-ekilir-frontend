@@ -13,7 +13,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
 import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
-import styles from '../style/MonthListStyle';  
+import styles from '../style/Style';  
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const numColumns = 3;

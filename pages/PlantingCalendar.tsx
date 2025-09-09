@@ -12,8 +12,6 @@ import { RouteProp } from '@react-navigation/native';
 import { format } from 'date-fns';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
 import { tAxios } from '../call_config';
-import styles from '../style/MonthListStyle';
-import { Icon } from 'react-native-vector-icons/Icon';
 import { DeletePlantingModal } from './modal/DeletePlantingModal';
 import { PlantingDetailModal } from './modal/PlantingDetailModal';
 
