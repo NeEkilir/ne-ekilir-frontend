@@ -105,6 +105,12 @@ const RestManagerApiList: IPathModel = {
     module: moduleProje.REST_MAN,
     description: 'login',
   },
+  USER_INFO: {
+    url: '/user/info',
+    method: MethodTypes.GET,
+    module: moduleProje.REST_MAN,
+    description: 'user info',
+  },
 };
 
 export { RestManagerApiList };

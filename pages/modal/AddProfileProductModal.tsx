@@ -11,6 +11,7 @@ import {
 import { tAxios } from '../../call_config';
 import { RestManagerApiList } from '../../call_config/api-list/RestManagerApiList';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useUser } from '../../utils/UserContext';
 
 interface AddProfileProductModalInterface {
   show: any;
@@ -25,15 +26,14 @@ export const AddProfileProductModal = (
   const [date, setDate] = useState<Date>(new Date());
   const [showPicker, setShowPicker] = useState(false);
   const [aliasName, setAliasName] = useState<any>('');
-
-  const userId = 2;
+  const { userInfo } = useUser();
 
   const onSave = () => {
     tAxios
       .call({
         api: RestManagerApiList.ADD_PROFILE_PRODUCT,
         body: {
-          userId: userId,
+          userId: userInfo?.id,
           productId: props?.productId,
           plantingDate: date.toISOString().split('T')[0],
           aliasName: aliasName,
@@ -116,7 +116,9 @@ export const AddProfileProductModal = (
               onChange={onChange}
             />
           )}
-          <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>
+          <Text
+            style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}
+          >
             Seçilen Tarih: {date.toLocaleDateString()}
           </Text>
           <View

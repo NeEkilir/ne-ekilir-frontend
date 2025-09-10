@@ -17,6 +17,7 @@ import { AddCommentModal } from './modal/AddCommentModal';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { format, parse } from 'date-fns';
 import { AddProfileProductModal } from './modal/AddProfileProductModal';
+import { useUser } from '../utils/UserContext';
 
 type ProductDetailRouteProp = RouteProp<RootStackParamList, 'Ürün'>;
 
@@ -33,8 +34,7 @@ export default function ProductDetail({
   const [isShowAddProfileModal, setIsShowAddProfileModal] = useState<any>();
   const [commentList, setCommentList] = useState<any>();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-
-  const userId = 2;
+  const { userInfo, setUserInfo } = useUser();
 
   useEffect(() => {
     if (navigation) {
@@ -86,7 +86,7 @@ export default function ProductDetail({
       tAxios
         .call({
           api: RestManagerApiList.GET_RATING,
-          pathVariable: { productId: productId, userId: userId },
+          pathVariable: { productId: productId, userId: userInfo?.id },
         })
         .then((res: any) => {
           setRating(res || { rating: 0 });
@@ -100,7 +100,7 @@ export default function ProductDetail({
         .call({
           api: RestManagerApiList.EDIT_RATING,
           pathVariable: { id: rating?.id },
-          body: { productId: productId, userId: userId, rate: tempRate },
+          body: { productId: productId, userId: userInfo?.id, rate: tempRate },
         })
         .then((res: any) => {
           setRating(res || { rating: 0 });
@@ -109,7 +109,7 @@ export default function ProductDetail({
       tAxios
         .call({
           api: RestManagerApiList.SAVE_RATING,
-          body: { productId: productId, userId: userId, rate: tempRate },
+          body: { productId: productId, userId: userInfo?.id, rate: tempRate },
         })
         .then((res: any) => {
           setRating(res || { rating: 0 });
@@ -179,9 +179,7 @@ export default function ProductDetail({
           }}
           onPress={() => setIsShowAddProfileModal(true)}
         >
-          <Text style={{ color: 'white', fontWeight: '600' }}>
-            + Ekildi
-          </Text>
+          <Text style={{ color: 'white', fontWeight: '600' }}>+ Ekildi</Text>
         </TouchableOpacity>
       </View>
       <Text

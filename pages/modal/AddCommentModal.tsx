@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { tAxios } from '../../call_config';
 import { RestManagerApiList } from '../../call_config/api-list/RestManagerApiList';
+import { useUser } from '../../utils/UserContext';
 
 interface AddCommentModalInterface {
   show: any;
@@ -20,15 +21,14 @@ interface AddCommentModalInterface {
 export const AddCommentModal = (props: AddCommentModalInterface) => {
   const [description, setDescriprion] = useState<any>('');
   const [header, setHeader] = useState<any>('');
-
-  const userId = 2;
+  const { userInfo } = useUser();
 
   const onSave = () => {
     tAxios
       .call({
         api: RestManagerApiList.SAVE_COMMENT,
         body: {
-          userId: userId,
+          userId: userInfo?.id,
           productId: props?.productId,
           commentHeader: header,
           commentDetail: description,

@@ -14,6 +14,7 @@ import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
 import { tAxios } from '../call_config';
 import { DeletePlantingModal } from './modal/DeletePlantingModal';
 import { PlantingDetailModal } from './modal/PlantingDetailModal';
+import { useUser } from '../utils/UserContext';
 
 type PlantingCalendarRouteProp = RouteProp<RootStackParamList, 'Ekim Takvimi'>;
 type PlantingCalendarNavigationProp = StackNavigationProp<
@@ -29,11 +30,9 @@ export default function PlantingCalendar({
   const [productList, setProductList] = useState<any>();
   const [isDeleteModal, setİsDeleteModal] = useState<any>();
   const [isDetailModal, setİsDetailModal] = useState<any>();
-
-  const userId = 2;
+  const { userInfo } = useUser();
 
   const getProductList = (userId: any) => {
-    console.log(userId);
     tAxios
       .call({
         api: RestManagerApiList.GET_PROFILE_PRODUCT,
@@ -45,10 +44,10 @@ export default function PlantingCalendar({
   };
 
   useEffect(() => {
-    if (userId) {
-      getProductList(userId);
+    if (userInfo?.id) {
+      getProductList(userInfo?.id);
     }
-  }, [userId]);
+  }, [userInfo?.id]);
 
   return (
     <>

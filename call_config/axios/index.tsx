@@ -6,8 +6,7 @@ import { RestManagerApiList } from '../api-list/RestManagerApiList';
 
 const HTTP_AUTHORIZATION_ERROR_CODE = 401;
 
-const refreshAccessToken = async (refreshToken: string) => {
-  console.log(refreshToken, 'üüü');
+const refreshAccessToken = async (refreshToken: string, setIsLogin: any) => {
   tAxios
     .call({
       api: RestManagerApiList.REFRESH_TOKEN,
@@ -28,11 +27,12 @@ const refreshAccessToken = async (refreshToken: string) => {
     .catch((error: any) => {
       console.error('Refresh token yenileme hatası:', error);
       clearTokens();
+      setIsLogin(false);
       return null;
     });
 };
 
-export const setupAxiosInterceptors = () => {
+export const setupAxiosInterceptors = (setIsLogin: any) => {
   const onRequestSuccess = async (config: any) => {
     const tokens = await getTokens();
 
@@ -73,6 +73,7 @@ export const setupAxiosInterceptors = () => {
       if (tokens?.accessToken?.refreshToken) {
         const newAccessToken = refreshAccessToken(
           tokens?.accessToken?.refreshToken,
+          setIsLogin,
         );
 
         if (newAccessToken) {

@@ -13,8 +13,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
 import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
-import styles from '../style/Style';  
+import styles from '../style/Style';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useUser } from '../utils/UserContext';
 
 const numColumns = 3;
 const screenWidth = Dimensions.get('window').width;
@@ -30,6 +31,15 @@ export default function MonthList({
   const [months, setMonths] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [dailyPlanting, setDailyPlanting] = useState<any>();
+  const { userInfo, setUserInfo } = useUser();
+
+  useEffect(() => {
+    if (!userInfo) {
+      tAxios.call({ api: RestManagerApiList.USER_INFO }).then((res: any) => {
+        setUserInfo(res);
+      });
+    }
+  }, [userInfo]);
 
   useEffect(() => {
     tAxios

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { tAxios } from '../../call_config';
 import { RestManagerApiList } from '../../call_config/api-list/RestManagerApiList';
+import { useUser } from '../../utils/UserContext';
 
 interface addRequestModalInterface {
   show: any;
@@ -17,15 +18,14 @@ interface addRequestModalInterface {
 export const AddRequestModal = (props: addRequestModalInterface) => {
   const [description, setDescriprion] = useState<any>('');
   const [header, setHeader] = useState<any>('');
-
-  const userId = 2;
+  const { userInfo } = useUser();
 
   const onSave = () => {
     tAxios
       .call({
         api: RestManagerApiList.SEND_REQUEST,
         body: {
-          userId: userId,
+          userId: userInfo?.id,
           requestHeader: header,
           requestDetail: description,
         },
