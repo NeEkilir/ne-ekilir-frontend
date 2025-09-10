@@ -111,6 +111,12 @@ const RestManagerApiList: IPathModel = {
     module: moduleProje.REST_MAN,
     description: 'user info',
   },
+  DELETE_PLANTING_CALENDER: {
+    url: '/user-product/delete/{id}',
+    method: MethodTypes.DELETE,
+    module: moduleProje.REST_MAN,
+    description: 'delete product for planting calender',
+  },
 };
 
 export { RestManagerApiList };

@@ -7,6 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import { tAxios } from '../../call_config';
+import { RestManagerApiList } from '../../call_config/api-list/RestManagerApiList';
 
 interface DeletePlantingModalInterface {
   show: any;
@@ -15,7 +17,16 @@ interface DeletePlantingModalInterface {
   id: any;
 }
 export const DeletePlantingModal = (props: DeletePlantingModalInterface) => {
-  const onSave = () => {};
+  const onSave = () => {
+    tAxios
+      .call({
+        api: RestManagerApiList.DELETE_PLANTING_CALENDER,
+        pathVariable: { id: props?.id },
+      })
+      .then((res: any) => {
+        props?.onClose(true);
+      });
+  };
 
   return (
     <Modal

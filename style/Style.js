@@ -73,9 +73,21 @@ export default StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
   },
+  logocontainer: {
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    resizeMode: 'contain',
+  },
   logintitle: {
     fontSize: 24,
     marginBottom: 20,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
   logininput: {
@@ -94,5 +106,59 @@ export default StyleSheet.create({
   loginbuttonText: {
     color: '#fff',
     fontSize: 16,
+  },
+  profilecard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F8F8F8',
+    padding: 14,
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 2,
+    marginVertical: 10,
+  },
+  profileavatarContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 14,
+  },
+  profileavatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#ddd',
+  },
+  profileinfoContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  profilename: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 2,
+  },
+  profileusername: {
+    fontSize: 15,
+    color: '#777',
+    marginBottom: 2,
+  },
+  profileemail: {
+    fontSize: 14,
+    color: '#555',
+  },
+  profilelogoutButton: {
+    backgroundColor: '#ff4d4d',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+  },
+  profilelogoutText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 14,
   },
 });

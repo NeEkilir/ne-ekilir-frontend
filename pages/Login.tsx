@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
@@ -47,7 +48,10 @@ export default function Login({
 
   return (
     <View style={styles.logincontainer}>
-      <Text style={styles.logintitle}>Giriş Yap</Text>
+      <View style={styles.logocontainer}>
+        <Image source={require('../assets/main.png')} style={styles.logo} />
+      </View>
+      <Text style={styles.logintitle}>Ne Ekilir?</Text>
       <TextInput
         placeholder="E-posta"
         style={styles.logininput}

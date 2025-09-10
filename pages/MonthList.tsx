@@ -55,7 +55,7 @@ export default function MonthList({
         headerLeft: () => (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Top 10');
+              navigation.navigate('Profil');
             }}
             style={{
               backgroundColor: styles.title.color,
@@ -65,23 +65,21 @@ export default function MonthList({
               marginLeft: 10,
             }}
           >
-            <Icon name={'star'} color={styles.monthCard.backgroundColor} />
+            <Icon name={'user'} color={styles.monthCard.backgroundColor} />
           </TouchableOpacity>
         ),
         headerRight: () => (
           <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Ekim Takvimi');
-            }}
+            onPress={() => {}}
             style={{
-              backgroundColor: styles.title.color,
+              backgroundColor: '#ff4d4d',
               paddingVertical: 6,
               paddingHorizontal: 12,
               borderRadius: 8,
               marginRight: 10,
             }}
           >
-            <Icon name={'calendar'} color={styles.monthCard.backgroundColor} />
+            <Icon name={'sign-out'} color={styles.monthCard.backgroundColor} />
           </TouchableOpacity>
         ),
       });
@@ -121,7 +119,32 @@ export default function MonthList({
       </View>
       {dailyPlanting && (
         <View style={styles.suggestionCard}>
-          <Text style={styles.suggestionTitle}>🌿 Bugün İçin Öneri</Text>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <View>
+              <Text style={styles.suggestionTitle}>🌿 Bugün İçin Öneri</Text>
+            </View>
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Top 10');
+                }}
+                style={{
+                  backgroundColor: styles.title.color,
+                  paddingVertical: 6,
+                  paddingHorizontal: 12,
+                  borderRadius: 8,
+                }}
+              >
+                <Icon name={'star'} color={styles.monthCard.backgroundColor} />
+              </TouchableOpacity>
+            </View>
+          </View>
           <Text style={styles.suggestionText2}>{dailyPlanting}</Text>
         </View>
       )}

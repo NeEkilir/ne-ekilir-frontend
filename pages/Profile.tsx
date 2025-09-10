@@ -5,6 +5,7 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
+  StyleSheet,
 } from 'react-native';
 import { RootStackParamList } from '../App';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -15,17 +16,19 @@ import { tAxios } from '../call_config';
 import { DeletePlantingModal } from './modal/DeletePlantingModal';
 import { PlantingDetailModal } from './modal/PlantingDetailModal';
 import { useUser } from '../utils/UserContext';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import styles from '../style/Style';
 
-type PlantingCalendarRouteProp = RouteProp<RootStackParamList, 'Ekim Takvimi'>;
-type PlantingCalendarNavigationProp = StackNavigationProp<
+type ProfileRouteProp = RouteProp<RootStackParamList, 'Profil'>;
+type ProfileNavigationProp = StackNavigationProp<
   RootStackParamList,
-  'Ekim Takvimi'
+  'Profil'
 >;
 
-export default function PlantingCalendar({
+export default function Profile({
   route,
 }: {
-  route: PlantingCalendarRouteProp;
+  route: ProfileRouteProp;
 }) {
   const [productList, setProductList] = useState<any>();
   const [isDeleteModal, setİsDeleteModal] = useState<any>();
@@ -51,12 +54,39 @@ export default function PlantingCalendar({
 
   return (
     <>
-      <View
-        style={{
-          backgroundColor: '#ccc',
-          marginVertical: 5,
-        }}
-      />
+      <View style={styles.profilecard}>
+        <View style={styles.profileavatarContainer}>
+          <Icon name={'user'} size={60} color="#666" />
+        </View>
+
+        <View style={styles.profileinfoContainer}>
+          <Text style={styles.profilename}>
+            {userInfo?.name + ' ' + userInfo?.surname}
+          </Text>
+          <Text style={styles.profileusername}>@{userInfo?.userName}</Text>
+          <Text style={styles.profileemail}>{userInfo?.email}</Text>
+        </View>
+        <TouchableOpacity style={styles.profilelogoutButton} onPress={() => {}}>
+          <Text style={styles.profilelogoutText}>Çıkış Yap</Text>
+        </TouchableOpacity>
+      </View>
+      {!productList?.length && (
+        <View
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 15,
+              margin: 10,
+            }}
+          >
+            {'Takviminizde ürün bulunmamaktadır.'}
+          </Text>
+        </View>
+      )}
       <FlatList
         data={productList}
         keyExtractor={(item, index) => index.toString()}
@@ -208,7 +238,12 @@ export default function PlantingCalendar({
       {isDeleteModal && (
         <DeletePlantingModal
           show={isDeleteModal ? true : false}
-          onClose={() => setİsDeleteModal(null)}
+          onClose={(isRefresh?: any) => {
+            if (isRefresh) {
+              getProductList(userInfo?.id);
+            }
+            setİsDeleteModal(null);
+          }}
           name={
             productList?.find((e: any) => e?.id === isDeleteModal)?.productId
               ?.productNameTr

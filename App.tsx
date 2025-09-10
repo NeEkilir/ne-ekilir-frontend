@@ -6,7 +6,7 @@ import ProductList from './pages/ProductList';
 import { setupAxiosInterceptors, tAxios } from './call_config';
 import ProductDetail from './pages/ProductDetail';
 import TopTenList from './pages/TopTenList';
-import PlantingCalendar from './pages/PlantingCalendar';
+import Profile from './pages/Profile';
 import { getTokens } from './utils/SecureStorage';
 import Login from './pages/Login';
 import SplashPage from './pages/SplashPage';
@@ -17,7 +17,7 @@ export type RootStackParamList = {
   Detay: { monthId: string };
   Ürün: { productId: string };
   'Top 10': undefined;
-  'Ekim Takvimi': undefined;
+  'Profil': undefined;
   Login: undefined;
   Splash: undefined;
 };
@@ -48,7 +48,7 @@ export default function App() {
               <Stack.Screen name="Detay" component={ProductList} />
               <Stack.Screen name="Ürün" component={ProductDetail} />
               <Stack.Screen name="Top 10" component={TopTenList} />
-              <Stack.Screen name="Ekim Takvimi" component={PlantingCalendar} />
+              <Stack.Screen name="Profil" component={Profile} />
             </>
           ) : isLoggedIn === false ? (
             <Stack.Screen name="Login" options={{ headerShown: false }}>

@@ -6,32 +6,6 @@ import { RestManagerApiList } from '../api-list/RestManagerApiList';
 
 const HTTP_AUTHORIZATION_ERROR_CODE = 401;
 
-const refreshAccessToken = async (refreshToken: string, setIsLogin: any) => {
-  tAxios
-    .call({
-      api: RestManagerApiList.REFRESH_TOKEN,
-      body: {
-        refreshToken,
-      },
-    })
-    .then((res: any) => {
-      const newAccessToken = res?.accessToken?.token;
-      const newRefreshToken = res?.accessToken?.refreshToken;
-
-      if (newAccessToken && newRefreshToken) {
-        saveTokens(newAccessToken, newRefreshToken);
-      }
-
-      return newAccessToken;
-    })
-    .catch((error: any) => {
-      console.error('Refresh token yenileme hatası:', error);
-      clearTokens();
-      setIsLogin(false);
-      return null;
-    });
-};
-
 export const setupAxiosInterceptors = (setIsLogin: any) => {
   const onRequestSuccess = async (config: any) => {
     const tokens = await getTokens();
@@ -59,11 +33,7 @@ export const setupAxiosInterceptors = (setIsLogin: any) => {
 
   const onResponseError = async (error: any) => {
     const originalRequest = error.config;
-    console.log(
-      error?.response?.status === HTTP_AUTHORIZATION_ERROR_CODE &&
-        !originalRequest._retry,
-      'error',
-    );
+    console.log(error?.response?.status, 'error');
     if (
       error?.response?.status === HTTP_AUTHORIZATION_ERROR_CODE &&
       !originalRequest._retry
@@ -71,15 +41,55 @@ export const setupAxiosInterceptors = (setIsLogin: any) => {
       originalRequest._retry = true;
       const tokens = await getTokens();
       if (tokens?.accessToken?.refreshToken) {
-        const newAccessToken = refreshAccessToken(
-          tokens?.accessToken?.refreshToken,
-          setIsLogin,
-        );
+        tAxios
+          .call({
+            api: RestManagerApiList.REFRESH_TOKEN,
+            body: {
+              refreshToken: `${tokens?.accessToken?.refreshToken}`,
+            },
+          })
+          .then((res: any) => {
+            console.log(res, 'payload');
 
-        if (newAccessToken) {
-          originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-          return axios(originalRequest);
-        }
+            saveTokens({
+              accessToken: {
+                token: res?.token,
+                refreshToken: res?.refreshToken,
+              },
+            }).then((type: any) => {
+              console.log(
+                {
+                  accessToken: {
+                    token: res?.token,
+                    refreshToken: res?.refreshToken,
+                  },
+                },
+                res?.token,
+                'üüüüü',
+              );
+              originalRequest.headers[
+                'Authorization'
+              ] = `Bearer ${res?.token}`;
+
+              return axios
+                .request(originalRequest)
+                .then(res => {
+                  onResponseSuccess(res);
+                })
+                .catch((error: any) => {
+                  console.error('Refresh token yenileme hatası:', error);
+                  clearTokens();
+                  setIsLogin(false);
+                  return null;
+                });
+            });
+          })
+          .catch((error: any) => {
+            console.error('Refresh token yenileme hatası:', error);
+            clearTokens();
+            setIsLogin(false);
+            return null;
+          });
       }
       clearTokens();
     }
