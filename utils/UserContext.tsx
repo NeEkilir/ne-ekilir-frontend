@@ -2,16 +2,14 @@ import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { navigationRef } from '../NavigatorRef';
 import { StackActions } from '@react-navigation/native';
 
-type UserInfo =
-  | {
-      email: string;
-      id: number;
-      name: string;
-      password: string;
-      surname: string;
-      userName: string;
-    }
-  | any;
+type UserInfo = {
+  email: string;
+  id: string;
+  name: string;
+  password: string;
+  surname: string;
+  userName: string;
+};
 
 type UserContextType = {
   userInfo: UserInfo;
@@ -24,7 +22,14 @@ type UserContextType = {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [userInfo, setUserInfo] = useState<UserInfo>(null);
+  const [userInfo, setUserInfo] = useState<UserInfo>({
+    email: '',
+    id: '',
+    name: '',
+    password: '',
+    surname: '',
+    userName: '',
+  });
   const [isLogin, setIsLogin] = useState<any>();
 
   const handleRefresh = () => {
