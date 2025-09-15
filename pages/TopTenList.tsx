@@ -9,14 +9,14 @@ import {
 import axios from 'axios';
 import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
-import { RootStackParamList } from '../App';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../AppNavigator';
 
-type TopTenListRouteProp = RouteProp<RootStackParamList, 'Top 10'>;
+type TopTenListRouteProp = RouteProp<RootStackParamList, 'Top10'>;
 type TopTenListNavigationProp = StackNavigationProp<
   RootStackParamList,
-  'Top 10'
+  'Top10'
 >;
 
 export default function TopTenList({ route }: { route: TopTenListRouteProp }) {

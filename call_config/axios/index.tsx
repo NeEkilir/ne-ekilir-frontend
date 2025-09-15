@@ -6,7 +6,7 @@ import { RestManagerApiList } from '../api-list/RestManagerApiList';
 
 const HTTP_AUTHORIZATION_ERROR_CODE = 401;
 
-export const setupAxiosInterceptors = (setIsLogin: any) => {
+export const setupAxiosInterceptors = (setIsLogin: any, handleRefresh: any) => {
   const onRequestSuccess = async (config: any) => {
     const tokens = await getTokens();
 
@@ -20,8 +20,8 @@ export const setupAxiosInterceptors = (setIsLogin: any) => {
 
     config.headers['Accept'] = 'application/json';
 
-    if (tokens?.accessToken) {
-      config.headers['Authorization'] = `Bearer ${tokens?.accessToken?.token}`;
+    if (tokens) {
+      config.headers['Authorization'] = `Bearer ${tokens?.token}`;
     }
 
     return config;
@@ -33,48 +33,31 @@ export const setupAxiosInterceptors = (setIsLogin: any) => {
 
   const onResponseError = async (error: any) => {
     const originalRequest = error.config;
-    console.log(error?.response?.status, 'error');
     if (
       error?.response?.status === HTTP_AUTHORIZATION_ERROR_CODE &&
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
       const tokens = await getTokens();
-      if (tokens?.accessToken?.refreshToken) {
+      if (tokens?.refreshToken) {
         tAxios
           .call({
             api: RestManagerApiList.REFRESH_TOKEN,
             body: {
-              refreshToken: `${tokens?.accessToken?.refreshToken}`,
+              refreshToken: `${tokens?.refreshToken}`,
             },
           })
           .then((res: any) => {
-            console.log(res, 'payload');
+            console.log(res, 'payloadiçiçiç');
 
-            saveTokens({
-              accessToken: {
-                token: res?.token,
-                refreshToken: res?.refreshToken,
-              },
-            }).then((type: any) => {
-              console.log(
-                {
-                  accessToken: {
-                    token: res?.token,
-                    refreshToken: res?.refreshToken,
-                  },
-                },
-                res?.token,
-                'üüüüü',
-              );
-              originalRequest.headers[
-                'Authorization'
-              ] = `Bearer ${res?.token}`;
+            saveTokens(res).then((type: any) => {
+              originalRequest.headers['Authorization'] = `Bearer ${res?.token}`;
 
               return axios
                 .request(originalRequest)
                 .then(res => {
-                  onResponseSuccess(res);
+                  handleRefresh();
+                  return res;
                 })
                 .catch((error: any) => {
                   console.error('Refresh token yenileme hatası:', error);

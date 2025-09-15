@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import { RootStackParamList } from '../App';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { format } from 'date-fns';
@@ -18,22 +17,18 @@ import { PlantingDetailModal } from './modal/PlantingDetailModal';
 import { useUser } from '../utils/UserContext';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../style/Style';
+import { RootStackParamList } from '../AppNavigator';
+import { LogoutModal } from './modal/LogoutModal';
 
 type ProfileRouteProp = RouteProp<RootStackParamList, 'Profil'>;
-type ProfileNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Profil'
->;
+type ProfileNavigationProp = StackNavigationProp<RootStackParamList, 'Profil'>;
 
-export default function Profile({
-  route,
-}: {
-  route: ProfileRouteProp;
-}) {
+export default function Profile({ route }: { route: ProfileRouteProp }) {
   const [productList, setProductList] = useState<any>();
   const [isDeleteModal, setİsDeleteModal] = useState<any>();
   const [isDetailModal, setİsDetailModal] = useState<any>();
   const { userInfo } = useUser();
+  const [isLogout, setIsLogout] = useState<any>();
 
   const getProductList = (userId: any) => {
     tAxios
@@ -66,7 +61,12 @@ export default function Profile({
           <Text style={styles.profileusername}>@{userInfo?.userName}</Text>
           <Text style={styles.profileemail}>{userInfo?.email}</Text>
         </View>
-        <TouchableOpacity style={styles.profilelogoutButton} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.profilelogoutButton}
+          onPress={() => {
+            setIsLogout(true);
+          }}
+        >
           <Text style={styles.profilelogoutText}>Çıkış Yap</Text>
         </TouchableOpacity>
       </View>
@@ -250,6 +250,9 @@ export default function Profile({
           }
           id={isDeleteModal}
         />
+      )}
+      {isLogout && (
+        <LogoutModal show={isLogout} onClose={() => setIsLogout(false)} />
       )}
     </>
   );

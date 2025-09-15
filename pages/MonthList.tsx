@@ -10,12 +10,13 @@ import {
   StyleSheet,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../App';
 import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
 import styles from '../style/Style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useUser } from '../utils/UserContext';
+import { LogoutModal } from './modal/LogoutModal';
+import { RootStackParamList } from '../AppNavigator';
 
 const numColumns = 3;
 const screenWidth = Dimensions.get('window').width;
@@ -31,6 +32,8 @@ export default function MonthList({
   const [months, setMonths] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [dailyPlanting, setDailyPlanting] = useState<any>();
+  const [isLogout, setIsLogout] = useState<any>();
+
   const { userInfo, setUserInfo } = useUser();
 
   useEffect(() => {
@@ -70,7 +73,9 @@ export default function MonthList({
         ),
         headerRight: () => (
           <TouchableOpacity
-            onPress={() => {}}
+            onPress={() => {
+              setIsLogout(true);
+            }}
             style={{
               backgroundColor: '#ff4d4d',
               paddingVertical: 6,
@@ -132,7 +137,7 @@ export default function MonthList({
             <View>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('Top 10');
+                  navigation.navigate('Top10');
                 }}
                 style={{
                   backgroundColor: styles.title.color,
@@ -147,6 +152,9 @@ export default function MonthList({
           </View>
           <Text style={styles.suggestionText2}>{dailyPlanting}</Text>
         </View>
+      )}
+      {isLogout && (
+        <LogoutModal show={isLogout} onClose={() => setIsLogout(false)} />
       )}
     </ScrollView>
   );

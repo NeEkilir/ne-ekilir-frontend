@@ -1,4 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
+import { navigationRef } from '../NavigatorRef';
+import { StackActions } from '@react-navigation/native';
 
 type UserInfo =
   | {
@@ -14,15 +16,32 @@ type UserInfo =
 type UserContextType = {
   userInfo: UserInfo;
   setUserInfo: (userInfo: UserInfo) => void;
+  isLogin: any;
+  setIsLogin: (data: any) => void;
+  handleRefresh: () => void;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [userInfo, setUserInfo] = useState<UserInfo>(null);
+  const [isLogin, setIsLogin] = useState<any>();
+
+  const handleRefresh = () => {
+    if (navigationRef.isReady()) {
+      const route = navigationRef.getCurrentRoute();
+      if (route) {
+        navigationRef.dispatch(
+          StackActions.replace(route?.name, route?.params),
+        );
+      }
+    }
+  };
 
   return (
-    <UserContext.Provider value={{ userInfo, setUserInfo }}>
+    <UserContext.Provider
+      value={{ userInfo, setUserInfo, isLogin, setIsLogin, handleRefresh }}
+    >
       {children}
     </UserContext.Provider>
   );

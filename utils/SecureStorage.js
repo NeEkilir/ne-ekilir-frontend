@@ -1,9 +1,9 @@
 import * as Keychain from 'react-native-keychain';
 
-export const saveTokens = async (accessToken, refreshToken) => {
+export const saveTokens = async (data) => {
   await Keychain.setGenericPassword(
     'auth',
-    JSON.stringify({ accessToken, refreshToken }),
+    JSON.stringify(data),
   );
 };
 

@@ -10,11 +10,11 @@ import {
   Image,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../App';
 import styles from '../style/Style';
 import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
 import { saveTokens } from '../utils/SecureStorage';
+import { RootStackParamList } from '../AppNavigator';
 
 type LoginNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -40,6 +40,7 @@ export default function Login({
       })
       .then((res: any) => {
         setIsLoggedIn(true);
+        console.log(res,"login")
         saveTokens(res).then((type: any) => {
           navigation.replace('Aylar');
         });

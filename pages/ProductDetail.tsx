@@ -8,7 +8,6 @@ import {
   FlatList,
 } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../App';
 import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
 import { AirbnbRating, Rating } from 'react-native-ratings';
@@ -18,6 +17,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { format, parse } from 'date-fns';
 import { AddProfileProductModal } from './modal/AddProfileProductModal';
 import { useUser } from '../utils/UserContext';
+import { RootStackParamList } from '../AppNavigator';
 
 type ProductDetailRouteProp = RouteProp<RootStackParamList, 'Ürün'>;
 

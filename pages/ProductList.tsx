@@ -9,12 +9,12 @@ import {
   Pressable,
 } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../App';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
 import { Image } from 'react-native';
 import { AddRequestModal } from './modal/AddRequestModal';
+import { RootStackParamList } from '../AppNavigator';
 
 type ProductListRouteProp = RouteProp<RootStackParamList, 'Detay'>;
 type ProductListNavigationProp = StackNavigationProp<
@@ -28,7 +28,7 @@ export default function ProductList({
   route: ProductListRouteProp;
 }) {
   const { monthId } = route.params;
-  const [product, setProduct] = useState<any[]>([]);
+  const [product, setProduct] = useState<any[]>();
   const [monthDetail, setMonthDetail] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
   const [isShowRequestModal, setIsShowRequestModal] = useState<any>();
@@ -50,7 +50,7 @@ export default function ProductList({
           }}
         >
           <Text style={{ color: '#fff', fontSize: 14, fontWeight: 'bold' }}>
-           + Ekle
+            + Ekle
           </Text>
         </TouchableOpacity>
       ),
@@ -58,31 +58,36 @@ export default function ProductList({
   }, [navigation]);
 
   useEffect(() => {
-    tAxios
-      .call({
-        api: RestManagerApiList.GET_PRODUCT_LIST,
-        pathVariable: { id: monthId },
-      })
-      .then((res: any) => {
-        setProduct(
-          res.sort((a: any, b: any) =>
-            a.productNameTr.localeCompare(b.productNameTr, 'tr', {
-              sensitivity: 'base',
-            }),
-          ),
-        );
-      })
-      .finally(() => setLoading(false));
-  }, []);
+    if (!product) {
+      tAxios
+        .call({
+          api: RestManagerApiList.GET_PRODUCT_LIST,
+          pathVariable: { id: monthId },
+        })
+        .then((res: any) => {
+          console.log('ilililil');
+          setProduct(
+            res.sort((a: any, b: any) =>
+              a.productNameTr.localeCompare(b.productNameTr, 'tr', {
+                sensitivity: 'base',
+              }),
+            ),
+          );
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [product]);
 
   useEffect(() => {
-    tAxios
-      .call({
-        api: RestManagerApiList.GET_MONTH_DETAIL,
-        pathVariable: { id: monthId },
-      })
-      .then((res: any) => setMonthDetail(res));
-  }, []);
+    if (!monthDetail) {
+      tAxios
+        .call({
+          api: RestManagerApiList.GET_MONTH_DETAIL,
+          pathVariable: { id: monthId },
+        })
+        .then((res: any) => setMonthDetail(res));
+    }
+  }, [monthDetail]);
 
   if (loading) {
     return (
