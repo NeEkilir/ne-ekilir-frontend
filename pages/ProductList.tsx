@@ -65,7 +65,6 @@ export default function ProductList({
           pathVariable: { id: monthId },
         })
         .then((res: any) => {
-          console.log('ilililil');
           setProduct(
             res.sort((a: any, b: any) =>
               a.productNameTr.localeCompare(b.productNameTr, 'tr', {

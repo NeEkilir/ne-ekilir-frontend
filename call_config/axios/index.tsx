@@ -48,8 +48,6 @@ export const setupAxiosInterceptors = (setIsLogin: any, handleRefresh: any) => {
             },
           })
           .then((res: any) => {
-            console.log(res, 'payloadiçiçiç');
-
             saveTokens(res).then((type: any) => {
               originalRequest.headers['Authorization'] = `Bearer ${res?.token}`;
 

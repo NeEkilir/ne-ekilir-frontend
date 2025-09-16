@@ -17,6 +17,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useUser } from '../utils/UserContext';
 import { LogoutModal } from './modal/LogoutModal';
 import { RootStackParamList } from '../AppNavigator';
+import { SearchProductModal } from './modal/SearchProductModal';
 
 const numColumns = 3;
 const screenWidth = Dimensions.get('window').width;
@@ -32,12 +33,12 @@ export default function MonthList({
   const [months, setMonths] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [dailyPlanting, setDailyPlanting] = useState<any>();
-  const [isLogout, setIsLogout] = useState<any>();
+  const [isSearchModal, setIsSearchModal] = useState<any>();
 
   const { userInfo, setUserInfo } = useUser();
 
   useEffect(() => {
-    if (!userInfo) {
+    if (!userInfo?.id) {
       tAxios.call({ api: RestManagerApiList.USER_INFO }).then((res: any) => {
         setUserInfo(res);
       });
@@ -74,17 +75,17 @@ export default function MonthList({
         headerRight: () => (
           <TouchableOpacity
             onPress={() => {
-              setIsLogout(true);
+              setIsSearchModal(true);
             }}
             style={{
-              backgroundColor: '#ff4d4d',
+              backgroundColor: styles.title.color,
               paddingVertical: 6,
               paddingHorizontal: 12,
               borderRadius: 8,
               marginRight: 10,
             }}
           >
-            <Icon name={'sign-out'} color={styles.monthCard.backgroundColor} />
+            <Icon name={'search'} color={styles.monthCard.backgroundColor} />
           </TouchableOpacity>
         ),
       });
@@ -153,8 +154,11 @@ export default function MonthList({
           <Text style={styles.suggestionText2}>{dailyPlanting}</Text>
         </View>
       )}
-      {isLogout && (
-        <LogoutModal show={isLogout} onClose={() => setIsLogout(false)} />
+      {isSearchModal && (
+        <SearchProductModal
+          show={isSearchModal}
+          onClose={() => setIsSearchModal(false)}
+        />
       )}
     </ScrollView>
   );

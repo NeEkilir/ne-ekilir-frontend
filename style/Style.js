@@ -118,7 +118,8 @@ export default StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
     elevation: 2,
-    marginVertical: 10,
+    marginTop: 10,
+    marginBottom: 10,
   },
   profileavatarContainer: {
     justifyContent: 'center',

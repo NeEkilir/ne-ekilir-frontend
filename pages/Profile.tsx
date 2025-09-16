@@ -40,7 +40,7 @@ export default function Profile({ route }: { route: ProfileRouteProp }) {
         setProductList(res);
       });
   };
-
+  console.log(userInfo, '1üüü');
   useEffect(() => {
     if (userInfo?.id) {
       getProductList(userInfo?.id);
@@ -70,11 +70,29 @@ export default function Profile({ route }: { route: ProfileRouteProp }) {
           <Text style={styles.profilelogoutText}>Çıkış Yap</Text>
         </TouchableOpacity>
       </View>
+      <View
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 15,
+            textAlign: 'center',
+            fontWeight: 'bold',
+            backgroundColor: '#FFF',
+          }}
+        >
+          {'Ekim Takviminiz'}
+        </Text>
+      </View>
       {!productList?.length && (
         <View
           style={{
             display: 'flex',
             justifyContent: 'center',
+            backgroundColor: '#FFF',
           }}
         >
           <Text
@@ -90,14 +108,16 @@ export default function Profile({ route }: { route: ProfileRouteProp }) {
       <FlatList
         data={productList}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <View
             key={item?.id}
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
               backgroundColor: '#fff',
-              borderRadius: 8,
+              borderRadius: String(index) === '0' ? 0 : 8,
+              borderBottomRightRadius: 8,
+              borderBottomStartRadius: 8,
               padding: 10,
               marginBottom: 10,
               shadowColor: '#000',
@@ -116,6 +136,7 @@ export default function Profile({ route }: { route: ProfileRouteProp }) {
                   marginTop: 5,
                 }}
               >
+                <Text style={{ marginBottom: 5 }}>{index + 1 + '- '}</Text>
                 <Text
                   style={{ fontSize: 15, fontStyle: 'italic', marginBottom: 5 }}
                 >

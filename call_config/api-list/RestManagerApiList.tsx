@@ -117,6 +117,30 @@ const RestManagerApiList: IPathModel = {
     module: moduleProje.REST_MAN,
     description: 'delete product for planting calender',
   },
+  ADD_PLANTING_DETAIL: {
+    url: '/plantingDetail/save',
+    method: MethodTypes.POST,
+    module: moduleProje.REST_MAN,
+    description: 'add planting detail',
+  },
+  PLANTING_DETAIL_LIST: {
+    url: '/plantingDetail/list/{id}',
+    method: MethodTypes.GET,
+    module: moduleProje.REST_MAN,
+    description: 'planting detail list',
+  },
+  DELETE_PLANTING_DETAIL: {
+    url: '/plantingDetail/delete/{id}',
+    method: MethodTypes.DELETE,
+    module: moduleProje.REST_MAN,
+    description: 'delete planting detail',
+  },
+  SEARCH_PRODUCT: {
+    url: '/product/product-search/{productName}',
+    method: MethodTypes.GET,
+    module: moduleProje.REST_MAN,
+    description: 'search product',
+  },
 };
 
 export { RestManagerApiList };

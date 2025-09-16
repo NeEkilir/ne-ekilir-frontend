@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-  ActivityIndicator,
-  Image,
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import styles from '../style/Style';
 import { tAxios } from '../call_config';
@@ -40,7 +31,6 @@ export default function Login({
       })
       .then((res: any) => {
         setIsLoggedIn(true);
-        console.log(res,"login")
         saveTokens(res).then((type: any) => {
           navigation.replace('Aylar');
         });
