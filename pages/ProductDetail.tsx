@@ -37,11 +37,11 @@ export default function ProductDetail({
   const { userInfo, setUserInfo } = useUser();
 
   useEffect(() => {
-    if (navigation) {
+    if (navigation && productDetail) {
       navigation.setOptions({
+        headerTitle: productDetail?.productNameTr,
         headerRight: () => (
           <TouchableOpacity
-            onPress={() => setIsShowCommentModal(true)}
             style={{
               backgroundColor: '#4CAF50',
               paddingVertical: 6,
@@ -49,15 +49,31 @@ export default function ProductDetail({
               borderRadius: 8,
               marginRight: 10,
             }}
+            onPress={() => setIsShowAddProfileModal(true)}
           >
-            <Text style={{ color: '#fff', fontSize: 14, fontWeight: 'bold' }}>
-              + Yorum Yap
-            </Text>
+            <Text style={{ color: 'white', fontWeight: '600' }}>+ Ekildi</Text>
+          </TouchableOpacity>
+        ),
+      });
+    } else {
+      navigation.setOptions({
+        headerTitle: '',
+        headerRight: () => (
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#4CAF50',
+              paddingVertical: 6,
+              paddingHorizontal: 12,
+              borderRadius: 6,
+            }}
+            onPress={() => setIsShowAddProfileModal(true)}
+          >
+            <Text style={{ color: 'white', fontWeight: '600' }}>+ Ekildi</Text>
           </TouchableOpacity>
         ),
       });
     }
-  }, [navigation]);
+  }, [navigation, productDetail]);
 
   useEffect(() => {
     tAxios
@@ -94,29 +110,6 @@ export default function ProductDetail({
     }
   }, [rating]);
 
-  const ratingCompleted = (tempRate: any) => {
-    if (rating?.id) {
-      tAxios
-        .call({
-          api: RestManagerApiList.EDIT_RATING,
-          pathVariable: { id: rating?.id },
-          body: { productId: productId, userId: userInfo?.id, rate: tempRate },
-        })
-        .then((res: any) => {
-          setRating(res || { rating: 0 });
-        });
-    } else {
-      tAxios
-        .call({
-          api: RestManagerApiList.SAVE_RATING,
-          body: { productId: productId, userId: userInfo?.id, rate: tempRate },
-        })
-        .then((res: any) => {
-          setRating(res || { rating: 0 });
-        });
-    }
-  };
-
   const getCommentList = (productId: any) => {
     tAxios
       .call({
@@ -138,30 +131,6 @@ export default function ProductDetail({
     <View style={{ flex: 1 }}>
       <View
         style={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'row',
-          marginTop: 11,
-        }}
-      >
-        <Image
-          source={require('../assets/listResim.png')}
-          style={{ width: 24, height: 24, marginTop: 5, marginRight: 8 }}
-        />
-        <Text style={{ fontSize: 24 }}>{productDetail?.productNameTr}</Text>
-      </View>
-      <View
-        style={{
-          height: 2,
-          backgroundColor: '#ccc',
-          marginVertical: 10,
-          marginRight: 10,
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      />
-      <View
-        style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -169,94 +138,92 @@ export default function ProductDetail({
           paddingHorizontal: 10,
         }}
       >
-        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Nasıl Ekilir?</Text>
-        <TouchableOpacity
+        <View
           style={{
-            backgroundColor: '#4CAF50',
-            paddingVertical: 6,
-            paddingHorizontal: 12,
-            borderRadius: 6,
+            display: 'flex',
+            justifyContent: 'flex-start',
+            flexDirection: 'row',
+            marginTop: 11,
           }}
-          onPress={() => setIsShowAddProfileModal(true)}
         >
-          <Text style={{ color: 'white', fontWeight: '600' }}>+ Ekildi</Text>
-        </TouchableOpacity>
+          <Image
+            source={require('../assets/listResim.png')}
+            style={{ width: 17, height: 17, marginTop: 2, marginRight: 8 }}
+          />
+          <Text style={{ fontSize: 16, fontWeight: '400' }}>Nasıl Ekilir?</Text>
+        </View>
       </View>
       <Text
         style={{ fontSize: 16, color: '#555', marginLeft: 10, marginRight: 10 }}
       >
         {productDetail?.plantedDetail}
       </Text>
-      <View
+      <Text
         style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          marginVertical: 10,
+          fontSize: 12,
+          color: '#555',
+          marginRight: 10,
         }}
       >
-        {[1, 2, 3, 4, 5].map(star => (
-          <TouchableOpacity key={star} onPress={() => ratingCompleted(star)}>
-            <Icon
-              name={star <= rating?.rating ? 'star' : 'star-o'}
-              size={32}
-              color={star <= rating?.rating ? '#FFD700' : '#ccc'}
-              style={{ marginHorizontal: 4 }}
-            />
-          </TouchableOpacity>
-        ))}
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-evenly',
-          marginVertical: 10,
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 16,
-            color: '#555',
-            marginLeft: 10,
-            marginRight: 10,
-            marginTop: -20,
-          }}
-        >
-          {productAVGRate?.avgRate ? (
-            <Text>
-              <Text>{'Ort. Puan:'}</Text>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                }}
-              >
-                {productAVGRate?.avgRate}
-              </Text>
+        {productAVGRate?.avgRate ? (
+          <Text style={{ textAlign: 'right' }}>
+            <Text>{'Puan:'}</Text>
+            <Text
+              style={{
+                fontWeight: 'bold',
+              }}
+            >
+              {productAVGRate?.avgRate}
             </Text>
-          ) : (
-            <Text>
-              <Text>{'Ort. Puan:'}</Text>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                }}
-              >
-                {0}
-              </Text>
+          </Text>
+        ) : (
+          <Text>
+            <Text>{'Puan:'}</Text>
+            <Text
+              style={{
+                fontWeight: 'bold',
+              }}
+            >
+              {0}
             </Text>
-          )}
-        </Text>
-      </View>
+          </Text>
+        )}
+      </Text>
+
       {commentList?.length ? (
-        <Text
+        <View
           style={{
-            fontWeight: 'bold',
-            fontSize: 18,
-            marginBottom: 0,
-            paddingLeft: 8,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: 10,
           }}
         >
-          Yorumlar
-        </Text>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              fontSize: 18,
+              marginTop: 3,
+              paddingLeft: 8,
+            }}
+          >
+            Yorumlar
+          </Text>
+
+          <TouchableOpacity
+            onPress={() => setIsShowCommentModal(true)}
+            style={{
+              backgroundColor: '#555555ff',
+              paddingVertical: 6,
+              paddingHorizontal: 12,
+              borderRadius: 8,
+              marginRight: 10,
+            }}
+          >
+            <Text style={{ color: '#fff', fontSize: 14, fontWeight: 'bold' }}>
+              + Yorum Yap
+            </Text>
+          </TouchableOpacity>
+        </View>
       ) : (
         <></>
       )}

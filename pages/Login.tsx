@@ -6,6 +6,7 @@ import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
 import { saveTokens } from '../utils/SecureStorage';
 import { RootStackParamList } from '../AppNavigator';
+import { useUser } from '../utils/UserContext';
 
 type LoginNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -19,6 +20,7 @@ export default function Login({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const {  setUserInfo } = useUser();
 
   const handleLogin = () => {
     tAxios
@@ -33,6 +35,14 @@ export default function Login({
         setIsLoggedIn(true);
         saveTokens(res).then((type: any) => {
           navigation.replace('Aylar');
+          setUserInfo({
+            email: '',
+            id: '',
+            name: '',
+            password: '',
+            surname: '',
+            userName: '',
+          });
         });
       });
   };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Modal,
   View,
@@ -10,6 +10,7 @@ import {
 import { tAxios } from '../../call_config';
 import { RestManagerApiList } from '../../call_config/api-list/RestManagerApiList';
 import { useUser } from '../../utils/UserContext';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface AddCommentModalInterface {
   show: any;
@@ -22,6 +23,51 @@ export const AddCommentModal = (props: AddCommentModalInterface) => {
   const [description, setDescriprion] = useState<any>('');
   const [header, setHeader] = useState<any>('');
   const { userInfo } = useUser();
+  const [rating, setRating] = useState<any>();
+
+  useEffect(() => {
+    if (!rating) {
+      tAxios
+        .call({
+          api: RestManagerApiList.GET_RATING,
+          pathVariable: { productId: props?.productId, userId: userInfo?.id },
+        })
+        .then((res: any) => {
+          setRating(res || { rating: 0 });
+        });
+    }
+  }, [rating]);
+
+  const ratingCompleted = (tempRate: any) => {
+    if (rating?.id) {
+      tAxios
+        .call({
+          api: RestManagerApiList.EDIT_RATING,
+          pathVariable: { id: rating?.id },
+          body: {
+            productId: props?.productId,
+            userId: userInfo?.id,
+            rate: tempRate,
+          },
+        })
+        .then((res: any) => {
+          setRating(res || { rating: 0 });
+        });
+    } else {
+      tAxios
+        .call({
+          api: RestManagerApiList.SAVE_RATING,
+          body: {
+            productId: props?.productId,
+            userId: userInfo?.id,
+            rate: tempRate,
+          },
+        })
+        .then((res: any) => {
+          setRating(res || { rating: 0 });
+        });
+    }
+  };
 
   const onSave = () => {
     tAxios
@@ -63,6 +109,15 @@ export const AddCommentModal = (props: AddCommentModalInterface) => {
             width: '85%',
           }}
         >
+          <Text
+            style={{
+              fontSize: 17,
+              textAlign: 'center',
+              marginBottom: 15,
+            }}
+          >
+            Yorum Yap
+          </Text>
           <TextInput
             placeholder="Başlık giriniz.."
             value={header}
@@ -91,6 +146,28 @@ export const AddCommentModal = (props: AddCommentModalInterface) => {
               marginBottom: 15,
             }}
           />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginTop: 0,
+              marginBottom: 20,
+            }}
+          >
+            {[1, 2, 3, 4, 5].map(star => (
+              <TouchableOpacity
+                key={star}
+                onPress={() => ratingCompleted(star)}
+              >
+                <Icon
+                  name={star <= rating?.rating ? 'star' : 'star-o'}
+                  size={32}
+                  color={star <= rating?.rating ? '#FFD700' : '#ccc'}
+                  style={{ marginHorizontal: 4 }}
+                />
+              </TouchableOpacity>
+            ))}
+          </View>
           <View
             style={{
               flexDirection: 'row',

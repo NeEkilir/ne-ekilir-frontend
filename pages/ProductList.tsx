@@ -35,27 +35,54 @@ export default function ProductList({
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => {
-            setIsShowRequestModal(true);
-          }}
-          style={{
-            backgroundColor: '#4CAF50',
-            paddingVertical: 6,
-            paddingHorizontal: 12,
-            borderRadius: 8,
-            marginRight: 10,
-          }}
-        >
-          <Text style={{ color: '#fff', fontSize: 14, fontWeight: 'bold' }}>
-            + Ekle
-          </Text>
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation]);
+    if (monthDetail) {
+      navigation.setOptions({
+        headerTitle: monthDetail?.monthNameTr + ' Ayı',
+        headerTitleAlign: 'left',
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => {
+              setIsShowRequestModal(true);
+            }}
+            style={{
+              backgroundColor: '#4CAF50',
+              paddingVertical: 6,
+              paddingHorizontal: 12,
+              borderRadius: 8,
+              marginRight: 10,
+            }}
+          >
+            <Text style={{ color: '#fff', fontSize: 14, fontWeight: 'bold' }}>
+              + Ekle
+            </Text>
+          </TouchableOpacity>
+        ),
+      });
+    } else {
+      navigation.setOptions({
+        headerTitle: '',
+        headerTitleAlign: 'left',
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => {
+              setIsShowRequestModal(true);
+            }}
+            style={{
+              backgroundColor: '#4CAF50',
+              paddingVertical: 6,
+              paddingHorizontal: 12,
+              borderRadius: 8,
+              marginRight: 10,
+            }}
+          >
+            <Text style={{ color: '#fff', fontSize: 14, fontWeight: 'bold' }}>
+              + Ekle
+            </Text>
+          </TouchableOpacity>
+        ),
+      });
+    }
+  }, [navigation, monthDetail]);
 
   useEffect(() => {
     if (!product) {
@@ -99,20 +126,6 @@ export default function ProductList({
   return (
     <>
       <View style={{ flex: 1, padding: 20 }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-            {monthDetail?.monthNameTr} ayı ekilebilecekler
-          </Text>
-        </View>
-        <View
-          style={{ height: 2, backgroundColor: '#ccc', marginVertical: 10 }}
-        />
         <FlatList
           data={product}
           keyExtractor={(item, index) => index.toString()}

@@ -1,9 +1,8 @@
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   FlatList,
-  ActivityIndicator,
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
@@ -19,16 +18,46 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../style/Style';
 import { RootStackParamList } from '../AppNavigator';
 import { LogoutModal } from './modal/LogoutModal';
+import { Swipeable } from 'react-native-gesture-handler';
 
 type ProfileRouteProp = RouteProp<RootStackParamList, 'Profil'>;
 type ProfileNavigationProp = StackNavigationProp<RootStackParamList, 'Profil'>;
 
-export default function Profile({ route }: { route: ProfileRouteProp }) {
+export default function Profile({
+  navigation,
+}: {
+  navigation: ProfileNavigationProp;
+}) {
   const [productList, setProductList] = useState<any>();
   const [isDeleteModal, setİsDeleteModal] = useState<any>();
   const [isDetailModal, setİsDetailModal] = useState<any>();
-  const { userInfo } = useUser();
+  const { userInfo, setUserInfo } = useUser();
   const [isLogout, setIsLogout] = useState<any>();
+
+  useEffect(() => {
+    if (navigation) {
+      navigation.setOptions({
+        headerTitle: '@' + userInfo?.userName,
+        headerTitleAlign: 'left',
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => {
+              setIsLogout(true);
+            }}
+            style={{
+              backgroundColor: styles.profilelogoutButton.backgroundColor,
+              paddingVertical: 6,
+              paddingHorizontal: 12,
+              borderRadius: 8,
+              marginRight: 10,
+            }}
+          >
+            <Icon name={'sign-out'} color={styles.monthCard.backgroundColor} />
+          </TouchableOpacity>
+        ),
+      });
+    }
+  }, [navigation]);
 
   const getProductList = (userId: any) => {
     tAxios
@@ -40,12 +69,38 @@ export default function Profile({ route }: { route: ProfileRouteProp }) {
         setProductList(res);
       });
   };
-  console.log(userInfo, '1üüü');
+
   useEffect(() => {
     if (userInfo?.id) {
       getProductList(userInfo?.id);
     }
   }, [userInfo?.id]);
+
+  const renderRightActions = (item: any) => {
+    return (
+      <View style={{ flexDirection: 'row', height: '100%' }}>
+        {/* Alarm Kur Butonu */}
+        <TouchableOpacity
+          style={[localStyles.actionButton, { backgroundColor: '#185ec5ff' }]}
+          onPress={() => {
+            console.log('Alarm kuruldu: ', item.id);
+          }}
+        >
+          <Text style={localStyles.actionText}>Alarm Kur</Text>
+        </TouchableOpacity>
+
+        {/* Sil Butonu */}
+        <TouchableOpacity
+          style={[localStyles.actionButton, { backgroundColor: '#F44336' }]}
+          onPress={() => {
+            setİsDeleteModal(item.id); // Silme modalını aç
+          }}
+        >
+          <Text style={localStyles.actionText}>Sil</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   return (
     <>
@@ -58,17 +113,17 @@ export default function Profile({ route }: { route: ProfileRouteProp }) {
           <Text style={styles.profilename}>
             {userInfo?.name + ' ' + userInfo?.surname}
           </Text>
-          <Text style={styles.profileusername}>@{userInfo?.userName}</Text>
+          {/* <Text style={styles.profileusername}>@{userInfo?.userName}</Text> */}
           <Text style={styles.profileemail}>{userInfo?.email}</Text>
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.profilelogoutButton}
           onPress={() => {
             setIsLogout(true);
           }}
         >
           <Text style={styles.profilelogoutText}>Çıkış Yap</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <View
         style={{
@@ -87,6 +142,7 @@ export default function Profile({ route }: { route: ProfileRouteProp }) {
           {'Ekim Takviminiz'}
         </Text>
       </View>
+      <View style={{ height: 1, backgroundColor: '#ccc' }} />
       {!productList?.length && (
         <View
           style={{
@@ -109,107 +165,90 @@ export default function Profile({ route }: { route: ProfileRouteProp }) {
         data={productList}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <View
-            key={item?.id}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              backgroundColor: '#fff',
-              borderRadius: String(index) === '0' ? 0 : 8,
-              borderBottomRightRadius: 8,
-              borderBottomStartRadius: 8,
-              padding: 10,
-              marginBottom: 10,
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.1,
-              shadowRadius: 3,
-              elevation: 2,
-            }}
-          >
-            <View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                  marginTop: 5,
-                }}
-              >
-                <Text style={{ marginBottom: 5 }}>{index + 1 + '- '}</Text>
-                <Text
-                  style={{ fontSize: 15, fontStyle: 'italic', marginBottom: 5 }}
-                >
-                  {item?.productId?.productNameTr}
-                </Text>
-                <Text style={{ fontSize: 15, marginBottom: 5 }}>
-                  {' (' + (item?.aliasName ? item?.aliasName : '--') + ')'}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                  marginTop: 5,
-                }}
-              >
-                <Text
+          <Swipeable renderRightActions={() => renderRightActions(item)}>
+            <View
+              key={item?.id}
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                backgroundColor: '#fff',
+                borderRadius: String(index) === '0' ? 0 : 8,
+                borderBottomRightRadius: 8,
+                borderBottomStartRadius: 8,
+                padding: 10,
+                marginBottom: 10,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.1,
+                shadowRadius: 3,
+                elevation: 2,
+              }}
+            >
+              <View>
+                <View
                   style={{
-                    fontSize: 10,
-                    color: '#6d6d6dff',
-                    fontWeight: 'bold',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    marginTop: 5,
                   }}
                 >
-                  Ekim Tarihi:
-                </Text>
-                <Text style={{ fontSize: 10, color: '#6d6d6dff' }}>
-                  {item.plantingDate &&
-                    format(new Date(item.plantingDate), 'dd.MM.yyyy HH:mm')}
-                </Text>
-              </View>
-            </View>
-            <View>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#4CAF50',
-                  paddingVertical: 6,
-                  paddingHorizontal: 5,
-                  borderRadius: 6,
-                  display: 'flex',
-                  alignItems: 'center',
-                  alignContent: 'center',
-                }}
-                onPress={() => {
-                  setİsDetailModal(item);
-                }}
-              >
-                <Text
-                  style={{ color: 'white', fontSize: 12, textAlign: 'center' }}
+                  <Text style={{ marginBottom: 5 }}>{index + 1 + '- '}</Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontStyle: 'italic',
+                      marginBottom: 5,
+                    }}
+                  >
+                    {item?.productId?.productNameTr}
+                  </Text>
+                  <Text style={{ fontSize: 15, marginBottom: 5 }}>
+                    {' (' + (item?.aliasName ? item?.aliasName : '--') + ')'}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    marginTop: 5,
+                  }}
                 >
-                  Detaylı Ekim Takvimi Gör
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      color: '#6d6d6dff',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    Ekim Tarihi:
+                  </Text>
+                  <Text style={{ fontSize: 10, color: '#6d6d6dff' }}>
+                    {item.plantingDate &&
+                      format(new Date(item.plantingDate), 'dd.MM.yyyy HH:mm')}
+                  </Text>
+                </View>
+              </View>
               <View
                 style={{
-                  justifyContent: 'space-between',
                   flexDirection: 'row',
-                  marginTop: 4,
-                  gap: 4,
+                  alignItems: 'center',
+                  gap: 8,
                 }}
               >
                 <TouchableOpacity
                   style={{
-                    flex: 1,
-                    backgroundColor: '#4c56afff',
-                    paddingVertical: 6,
-                    paddingHorizontal: 5,
-                    borderRadius: 6,
-                    display: 'flex',
+                    backgroundColor: '#4CAF50',
+                    width: 85,
+                    height: 50,
+                    justifyContent: 'center',
                     alignItems: 'center',
-                    alignContent: 'center',
+                    borderRadius: 6,
                   }}
-                  onPress={() => {}}
+                  onPress={() => {
+                    setİsDetailModal(item);
+                  }}
                 >
                   <Text
                     style={{
@@ -218,35 +257,12 @@ export default function Profile({ route }: { route: ProfileRouteProp }) {
                       textAlign: 'center',
                     }}
                   >
-                    Alarm Kur
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    backgroundColor: '#af4c4cff',
-                    paddingVertical: 6,
-                    paddingHorizontal: 5,
-                    borderRadius: 6,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                  onPress={() => {
-                    setİsDeleteModal(item?.id);
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: 12,
-                    }}
-                  >
-                    Sil
+                    Detaylı Ekim Takvimini Gör
                   </Text>
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
+          </Swipeable>
         )}
       />
       {isDetailModal && (
@@ -278,3 +294,17 @@ export default function Profile({ route }: { route: ProfileRouteProp }) {
     </>
   );
 }
+
+const localStyles = StyleSheet.create({
+  actionButton: {
+    width: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  actionText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+});
