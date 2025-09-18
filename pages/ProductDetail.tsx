@@ -7,6 +7,7 @@ import {
   FlatList,
   Animated,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { tAxios } from '../call_config';
@@ -36,8 +37,8 @@ export default function ProductDetail({
   const [beneficialList, setBeneficalList] = useState<any>();
   const [detrimentalList, setDetrimentalList] = useState<any>();
   const [activeTab, setActiveTab] = useState<
-    'yorumlar' | 'yararlilar' | 'zararlilar'
-  >('yorumlar');
+    'comments' | 'beneficials' | 'detrimentals'
+  >('comments');
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const { userInfo } = useUser();
 
@@ -178,7 +179,7 @@ export default function ProductDetail({
             borderBottomColor: '#ccc',
           }}
         >
-          {['yorumlar', 'yararlilar', 'zararlilar'].map(tab => (
+          {['comments', 'beneficials', 'detrimentals'].map(tab => (
             <TouchableOpacity
               key={tab}
               onPress={() => setActiveTab(tab as any)}
@@ -196,9 +197,9 @@ export default function ProductDetail({
                   fontSize: 16,
                 }}
               >
-                {tab === 'yorumlar'
+                {tab === 'comments'
                   ? 'Yorumlar'
-                  : tab === 'yararlilar'
+                  : tab === 'beneficials'
                   ? 'Yararlılar'
                   : 'Zararlılar'}
               </Text>
@@ -220,7 +221,7 @@ export default function ProductDetail({
         </View>
       </View>
       <View style={{ flex: 1, padding: 5 }}>
-        {activeTab === 'yorumlar' && (
+        {activeTab === 'comments' && (
           <>
             <FlatList
               data={commentList}
@@ -282,10 +283,11 @@ export default function ProductDetail({
               <TouchableOpacity
                 onPress={() => setIsShowCommentModal(true)}
                 style={{
-                  backgroundColor: '#555555ff',
+                  backgroundColor: '#555555a9',
                   paddingVertical: 4,
                   paddingHorizontal: 12,
-                  borderRadius: 8,
+                  borderTopLeftRadius: 8,
+                  borderTopRightRadius: 8,
                   width: '100%',
                 }}
               >
@@ -304,40 +306,56 @@ export default function ProductDetail({
             </View>
           </>
         )}
-        {activeTab === 'yararlilar' && (
+        {activeTab === 'beneficials' && (
           <View style={{ alignItems: 'center', marginTop: 0 }}>
-            <Text style={{ color: '#000000ff' }}>
-              <View style={styles.listContainer}>
-                {beneficialList?.map((x: any, i: any) => {
-                  return (
-                    x && (
-                      <View key={i} style={styles.listItem}>
-                        <Text style={styles.listBullet}>{'\u2022'}</Text>
-                        <Text style={styles.listText}>{x}</Text>
-                      </View>
-                    )
-                  );
-                })}
-              </View>
-            </Text>
+            <ScrollView
+              contentContainerStyle={{
+                paddingLeft: 5,
+                paddingRight: 10,
+              }}
+              showsVerticalScrollIndicator={true}
+            >
+              <Text style={{ color: '#000000ff' }}>
+                <View style={styles.listContainer}>
+                  {beneficialList?.map((x: any, i: any) => {
+                    return (
+                      x && (
+                        <View key={i} style={styles.listItem}>
+                          <Text style={styles.listBullet}>{'\u2022'}</Text>
+                          <Text style={styles.listText}>{x}</Text>
+                        </View>
+                      )
+                    );
+                  })}
+                </View>
+              </Text>
+            </ScrollView>
           </View>
         )}
-        {activeTab === 'zararlilar' && (
+        {activeTab === 'detrimentals' && (
           <View style={{ alignItems: 'center', marginTop: 0 }}>
-            <Text style={{ color: '#000000ff' }}>
-              <View style={styles.listContainer}>
-                {detrimentalList?.map((x: any, i: any) => {
-                  return (
-                    x && (
-                      <View key={i} style={styles.listItem}>
-                        <Text style={styles.listBullet}>{'\u2022'}</Text>
-                        <Text style={styles.listText}>{x}</Text>
-                      </View>
-                    )
-                  );
-                })}
-              </View>
-            </Text>
+            <ScrollView
+              contentContainerStyle={{
+                paddingLeft: 5,
+                paddingRight: 10,
+              }}
+              showsVerticalScrollIndicator={true}
+            >
+              <Text style={{ color: '#000000ff' }}>
+                <View style={styles.listContainer}>
+                  {detrimentalList?.map((x: any, i: any) => {
+                    return (
+                      x && (
+                        <View key={i} style={styles.listItem}>
+                          <Text style={styles.listBulletRed}>{'\u2022'}</Text>
+                          <Text style={styles.listText}>{x}</Text>
+                        </View>
+                      )
+                    );
+                  })}
+                </View>
+              </Text>
+            </ScrollView>
           </View>
         )}
       </View>

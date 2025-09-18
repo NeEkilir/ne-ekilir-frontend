@@ -175,6 +175,12 @@ export default StyleSheet.create({
     lineHeight: 20,
     color: '#4CAF50',
   },
+  listBulletRed: {
+    fontSize: 30,
+    marginRight: 6,
+    lineHeight: 20,
+    color: '#af4c4cff',
+  },
   listText: {
     fontSize: 15,
     lineHeight: 20,
