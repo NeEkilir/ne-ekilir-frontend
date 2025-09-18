@@ -79,9 +79,8 @@ export default function Profile({
   const renderRightActions = (item: any) => {
     return (
       <View style={{ flexDirection: 'row', height: '100%' }}>
-        {/* Alarm Kur Butonu */}
         <TouchableOpacity
-          style={[localStyles.actionButton, { backgroundColor: '#185ec5ff' }]}
+          style={[localStyles.actionButton, { backgroundColor: '#3d6094ff' }]}
           onPress={() => {
             console.log('Alarm kuruldu: ', item.id);
           }}
@@ -89,11 +88,10 @@ export default function Profile({
           <Text style={localStyles.actionText}>Alarm Kur</Text>
         </TouchableOpacity>
 
-        {/* Sil Butonu */}
         <TouchableOpacity
-          style={[localStyles.actionButton, { backgroundColor: '#F44336' }]}
+          style={[localStyles.actionButton, { backgroundColor: '#af4139ff' }]}
           onPress={() => {
-            setİsDeleteModal(item.id); // Silme modalını aç
+            setİsDeleteModal(item.id); 
           }}
         >
           <Text style={localStyles.actionText}>Sil</Text>
@@ -113,17 +111,8 @@ export default function Profile({
           <Text style={styles.profilename}>
             {userInfo?.name + ' ' + userInfo?.surname}
           </Text>
-          {/* <Text style={styles.profileusername}>@{userInfo?.userName}</Text> */}
           <Text style={styles.profileemail}>{userInfo?.email}</Text>
         </View>
-        {/* <TouchableOpacity
-          style={styles.profilelogoutButton}
-          onPress={() => {
-            setIsLogout(true);
-          }}
-        >
-          <Text style={styles.profilelogoutText}>Çıkış Yap</Text>
-        </TouchableOpacity> */}
       </View>
       <View
         style={{

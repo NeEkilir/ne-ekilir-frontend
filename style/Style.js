@@ -161,4 +161,22 @@ export default StyleSheet.create({
     fontWeight: '600',
     fontSize: 14,
   },
+  listContainer: {
+    padding: 10,
+  },
+  listItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 8,
+  },
+  listBullet: {
+    fontSize: 30,
+    marginRight: 6,
+    lineHeight: 20,
+    color: '#4CAF50',
+  },
+  listText: {
+    fontSize: 15,
+    lineHeight: 20,
+  },
 });

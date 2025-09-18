@@ -125,7 +125,15 @@ export default function ProductList({
 
   return (
     <>
-      <View style={{ flex: 1, padding: 20 }}>
+      <View
+        style={{
+          flex: 1,
+          paddingTop: 10,
+          paddingLeft: 15,
+          paddingRight: 15,
+          paddingBottom: 10,
+        }}
+      >
         <FlatList
           data={product}
           keyExtractor={(item, index) => index.toString()}
