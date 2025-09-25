@@ -23,7 +23,6 @@ export default function Login({
   const {  setUserInfo } = useUser();
 
   const handleLogin = () => {
-    console.log("bibib")
     tAxios
       .call({
         api: RestManagerApiList.LOGIN,

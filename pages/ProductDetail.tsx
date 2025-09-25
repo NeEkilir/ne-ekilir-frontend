@@ -19,6 +19,8 @@ import { useUser } from '../utils/UserContext';
 import { RootStackParamList } from '../AppNavigator';
 import { StackNavigationProp } from '@react-navigation/stack';
 import styles from '../style/Style';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { DeleteCommentModal } from './modal/DeleteCommentModal';
 
 type ProductDetailRouteProp = RouteProp<RootStackParamList, 'Ürün'>;
 
@@ -41,6 +43,7 @@ export default function ProductDetail({
   >('comments');
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const { userInfo } = useUser();
+  const [showDeleteCommentModal, setShowDeleteCommentModal] = useState<any>();
 
   useEffect(() => {
     if (productDetail) {
@@ -223,6 +226,11 @@ export default function ProductDetail({
       <View style={{ flex: 1, padding: 5 }}>
         {activeTab === 'comments' && (
           <>
+            {!commentList?.length && (
+              <View>
+                <Text>Henüz yorum yapılmamış..</Text>
+              </View>
+            )}
             <FlatList
               data={commentList}
               keyExtractor={(item, index) => index.toString()}
@@ -234,6 +242,7 @@ export default function ProductDetail({
                     borderRadius: 8,
                     padding: 10,
                     marginBottom: 10,
+                    margin: 2,
                     shadowColor: '#000',
                     shadowOffset: { width: 0, height: 2 },
                     shadowOpacity: 0.1,
@@ -241,15 +250,39 @@ export default function ProductDetail({
                     elevation: 2,
                   }}
                 >
-                  <Text
+                  <View
                     style={{
-                      fontSize: 15,
-                      fontStyle: 'italic',
-                      marginBottom: 5,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      marginTop: 5,
                     }}
                   >
-                    {item?.commentHeader}
-                  </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        fontStyle: 'italic',
+                        marginBottom: 5,
+                      }}
+                    >
+                      {item?.commentHeader}
+                    </Text>
+                    {userInfo?.id === item?.userId?.id && (
+                      <TouchableOpacity
+                        style={{
+                          paddingVertical: 2,
+                          paddingHorizontal: 3,
+                          borderRadius: 6,
+                          borderWidth: 1,
+                          borderColor: '#F44336',
+                        }}
+                        onPress={() => {
+                          setShowDeleteCommentModal(item?.id);
+                        }}
+                      >
+                        <Icon name={'trash'} size={16} color="#F44336" />
+                      </TouchableOpacity>
+                    )}
+                  </View>
                   <Text style={{ fontSize: 14, color: '#777' }}>
                     {item?.commentDetail}
                   </Text>
@@ -283,7 +316,7 @@ export default function ProductDetail({
               <TouchableOpacity
                 onPress={() => setIsShowCommentModal(true)}
                 style={{
-                  backgroundColor: '#555555a9',
+                  backgroundColor: '#363636a9',
                   paddingVertical: 4,
                   paddingHorizontal: 12,
                   borderTopLeftRadius: 8,
@@ -373,6 +406,18 @@ export default function ProductDetail({
           onClose={() => setIsShowCommentModal(false)}
           productId={productId}
           getCommentList={getCommentList}
+        />
+      )}
+      {showDeleteCommentModal && (
+        <DeleteCommentModal
+          show={showDeleteCommentModal ? true : false}
+          onClose={(isReload?: any) => {
+            setShowDeleteCommentModal(null);
+            if (isReload) {
+              getCommentList(productId);
+            }
+          }}
+          id={showDeleteCommentModal}
         />
       )}
     </View>

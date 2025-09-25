@@ -5,6 +5,7 @@ import { RestManagerApiList } from '../../call_config/api-list/RestManagerApiLis
 import { AddPlantingDetailModal } from './AddPlantingDetailModal';
 import { format } from 'date-fns';
 import { DeletePlantingDetailModal } from './DeletePlantingDetailModal';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface PlantingDetailModalInterface {
   show: any;
@@ -71,27 +72,62 @@ export const PlantingDetailModal = (props: PlantingDetailModalInterface) => {
                   (props?.data?.aliasName ? props?.data?.aliasName : '--') +
                   ')'}
               </Text>
-              <TouchableOpacity
+              <View
                 style={{
-                  backgroundColor: '#4CAF50',
-                  paddingVertical: 4,
-                  paddingHorizontal: 10,
-                  borderRadius: 6,
-                  marginLeft: 10,
-                }}
-                onPress={() => {
-                  setShowAddDetail(true);
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-end',
                 }}
               >
-                <Text style={{ color: 'white', fontWeight: 'bold' }}>
-                  + Durum Gir
-                </Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#F44336',
+                    paddingVertical: 2,
+                    paddingHorizontal: 5,
+                    borderRadius: 6,
+                  }}
+                  onPress={props.onClose}
+                >
+                  <Text style={{ color: 'white', fontSize: 12 }}>X</Text>
+                </TouchableOpacity>
+              </View>
             </View>
             <View
-              style={{ height: 2, backgroundColor: '#ccc', marginVertical: 10 }}
+              style={{ height: 2, backgroundColor: '#ccc', marginVertical: 5 }}
             />
             <View style={{ maxHeight: 300 }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
+                  marginTop: 0,
+                  marginLeft: 0,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 10,
+                    color: '#6d6d6dff',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  Ekim Tarihi:
+                </Text>
+                <Text style={{ fontSize: 10, color: '#6d6d6dff' }}>
+                  {props?.data?.plantingDate &&
+                    format(
+                      new Date(props?.data?.plantingDate),
+                      'dd.MM.yyyy HH:mm',
+                    )}
+                </Text>
+              </View>
+              <View
+                style={{
+                  height: 2,
+                  backgroundColor: '#ccc',
+                  marginVertical: 5,
+                }}
+              />
               <FlatList
                 data={plantingDetailList}
                 keyExtractor={(item, index) => index.toString()}
@@ -105,6 +141,7 @@ export const PlantingDetailModal = (props: PlantingDetailModalInterface) => {
                       borderRadius: 8,
                       padding: 10,
                       marginBottom: 10,
+                      margin: 2,
                       shadowColor: '#000',
                       shadowOffset: { width: 2, height: 2 },
                       shadowOpacity: 0.1,
@@ -123,42 +160,36 @@ export const PlantingDetailModal = (props: PlantingDetailModalInterface) => {
                               format(new Date(item.detailTime), 'dd.MM.yyyy')}
                           </Text>
                         </View>
-                        <View style={{ flexDirection: 'row', gap: 5 }}>
-                          <Text style={{ fontSize: 13, color: '#6d6d6dff' }}>
-                            Uzunluk:
-                          </Text>
-                          <Text style={{ fontSize: 13, fontWeight: 'bold' }}>
-                            {item?.height}
-                          </Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', gap: 5 }}>
-                          <Text style={{ fontSize: 13, color: '#6d6d6dff' }}>
-                            Yaprak Sayısı:
-                          </Text>
-                          <Text style={{ fontSize: 13, fontWeight: 'bold' }}>
-                            {item?.leafCount}
-                          </Text>
-                        </View>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            flexWrap: 'wrap',
-                            gap: 5,
-                          }}
-                        >
-                          <Text style={{ fontSize: 13, color: '#6d6d6dff' }}>
-                            Açıklama:
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 13,
-                              fontWeight: 'bold',
-                              flexShrink: 1,
-                            }}
-                          >
-                            {item?.description}
-                          </Text>
-                        </View>
+                        {item?.height && (
+                          <View style={{ flexDirection: 'row', gap: 5 }}>
+                            <Text style={{ fontSize: 13, color: '#6d6d6dff' }}>
+                              Uzunluk:
+                            </Text>
+                            <Text style={{ fontSize: 13, fontWeight: 'bold' }}>
+                              {item?.height}
+                            </Text>
+                          </View>
+                        )}
+                        {item?.leafCount && (
+                          <View style={{ flexDirection: 'row', gap: 5 }}>
+                            <Text style={{ fontSize: 13, color: '#6d6d6dff' }}>
+                              Yaprak Sayısı:
+                            </Text>
+                            <Text style={{ fontSize: 13, fontWeight: 'bold' }}>
+                              {item?.leafCount}
+                            </Text>
+                          </View>
+                        )}
+                        {item?.description && (
+                          <View>
+                            <Text style={{ fontSize: 13, color: '#6d6d6dff' }}>
+                              Açıklama:{' '}
+                              <Text style={{ fontWeight: 'bold' }}>
+                                {item?.description.split('\n')[0]}
+                              </Text>
+                            </Text>
+                          </View>
+                        )}
                       </View>
                     </View>
                     <View
@@ -169,16 +200,17 @@ export const PlantingDetailModal = (props: PlantingDetailModalInterface) => {
                     >
                       <TouchableOpacity
                         style={{
-                          backgroundColor: '#F44336',
                           paddingVertical: 2,
                           paddingHorizontal: 5,
                           borderRadius: 6,
+                          borderWidth: 1,
+                          borderColor: '#F44336',
                         }}
                         onPress={() => {
                           setShowDeleteModal(item?.id);
                         }}
                       >
-                        <Text style={{ color: 'white', fontSize: 12 }}>X</Text>
+                        <Icon name={'trash'} size={15} color="#F44336" />
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -190,20 +222,22 @@ export const PlantingDetailModal = (props: PlantingDetailModalInterface) => {
                 flexDirection: 'row',
                 justifyContent: 'flex-end',
                 gap: 10,
-                marginTop: 30,
+                marginTop: 10,
               }}
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: '#F44336',
+                  backgroundColor: '#4CAF50',
                   paddingVertical: 8,
                   paddingHorizontal: 16,
                   borderRadius: 6,
                 }}
-                onPress={props.onClose}
+                onPress={() => {
+                  setShowAddDetail(true);
+                }}
               >
                 <Text style={{ color: 'white', fontWeight: 'bold' }}>
-                  Kapat
+                  + Durum Ekle
                 </Text>
               </TouchableOpacity>
             </View>

@@ -154,7 +154,7 @@ export default function Profile({
         data={productList}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <Swipeable renderRightActions={() => renderRightActions(item)}>
+          <Swipeable key={index+""+item?.id} renderRightActions={() => renderRightActions(item)}>
             <View
               key={item?.id}
               style={{

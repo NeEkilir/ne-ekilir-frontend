@@ -1,18 +1,22 @@
 import { Modal, View, Text, TouchableOpacity } from 'react-native';
-import { clearTokens } from '../../utils/SecureStorage';
-import { useUser } from '../../utils/UserContext';
+import { tAxios } from '../../call_config';
+import { RestManagerApiList } from '../../call_config/api-list/RestManagerApiList';
 
-interface LogoutModalInterface {
+interface DeleteCommentModalInterface {
   show: any;
   onClose: any;
+  id: any;
 }
-export const LogoutModal = (props: LogoutModalInterface) => {
-  const { setIsLogin } = useUser();
-
+export const DeleteCommentModal = (props: DeleteCommentModalInterface) => {
   const onSave = () => {
-    clearTokens();
-    setIsLogin(false);
-    props?.onClose();
+    tAxios
+      .call({
+        api: RestManagerApiList.DELETE_COMMENT,
+        pathVariable: { id: props?.id },
+      })
+      .then((res: any) => {
+        props?.onClose(true);
+      });
   };
 
   return (
@@ -39,7 +43,7 @@ export const LogoutModal = (props: LogoutModalInterface) => {
           }}
         >
           <Text style={{ fontSize: 16, marginBottom: 15 }}>
-            Çıkış yapmak istediğinize emin misiniz?
+            Silmek istediğinize emin misiniz?
           </Text>
           <View
             style={{

@@ -33,6 +33,7 @@ export const setupAxiosInterceptors = (setIsLogin: any, handleRefresh: any) => {
 
   const onResponseError = async (error: any) => {
     const originalRequest = error.config;
+    console.log(error?.response?.status, error?.response?.status === HTTP_AUTHORIZATION_ERROR_CODE ,"status")
     if (
       error?.response?.status === HTTP_AUTHORIZATION_ERROR_CODE &&
       !originalRequest._retry
@@ -50,7 +51,6 @@ export const setupAxiosInterceptors = (setIsLogin: any, handleRefresh: any) => {
           .then((res: any) => {
             saveTokens(res).then((type: any) => {
               originalRequest.headers['Authorization'] = `Bearer ${res?.token}`;
-
               return axios
                 .request(originalRequest)
                 .then(res => {

@@ -141,6 +141,12 @@ const RestManagerApiList: IPathModel = {
     module: moduleProje.REST_MAN,
     description: 'search product',
   },
+  DELETE_COMMENT: {
+    url: '/comment/delete/{id}',
+    method: MethodTypes.DELETE,
+    module: moduleProje.REST_MAN,
+    description: 'delete comment by id',
+  },
 };
 
 export { RestManagerApiList };
