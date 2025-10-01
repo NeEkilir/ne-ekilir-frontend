@@ -1,5 +1,9 @@
 import { StyleSheet } from 'react-native';
 
+const colors = {
+  primary: '#4CAF50',
+};
+
 export default StyleSheet.create({
   container: {
     paddingTop: 10,
@@ -33,7 +37,7 @@ export default StyleSheet.create({
     color: '#1B5E20',
   },
   suggestionButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: colors.primary,
     padding: 15,
     borderRadius: 20,
     marginTop: 25,
@@ -69,8 +73,8 @@ export default StyleSheet.create({
   },
   logincontainer: {
     flex: 1,
-    justifyContent: 'center',
-    padding: 20,
+    justifyContent: 'space-between',
+    padding: 15,
     backgroundColor: '#fff',
   },
   logocontainer: {
@@ -95,6 +99,13 @@ export default StyleSheet.create({
     borderColor: '#ddd',
     padding: 10,
     marginBottom: 15,
+    borderRadius: 8,
+  },
+  logininputPassword: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    padding: 10,
+    marginBottom: 0,
     borderRadius: 8,
   },
   loginbutton: {
@@ -173,7 +184,7 @@ export default StyleSheet.create({
     fontSize: 30,
     marginRight: 6,
     lineHeight: 20,
-    color: '#4CAF50',
+    color: colors.primary,
   },
   listBulletRed: {
     fontSize: 30,
@@ -184,5 +195,36 @@ export default StyleSheet.create({
   listText: {
     fontSize: 15,
     lineHeight: 20,
+  },
+  loginfooter: {
+    paddingVertical: 32, // py-8
+    paddingHorizontal: 24, // px-6
+    alignItems: 'center', // text-center
+  },
+  loginfooterText: {
+    fontSize: 14, // text-sm
+    flexDirection: 'row',
+    alignItems: 'center',
+    fontFamily: 'Epilogue-Regular',
+  },
+  loginsignupTextLink: {
+    fontWeight: '700', // font-bold
+    color: colors.primary,
+    textDecorationLine: 'underline',
+    fontFamily: 'Epilogue-Bold',
+    alignItems: 'center',
+    color: colors.primary,
+    fontSize: 13,
+  },
+  loginsubtle: {},
+  loginforgotPasswordContainer: {
+    margin: 5, // mt-4
+    alignItems: 'flex-end', // text-right
+  },
+  loginforgotPasswordText: {
+    fontSize: 14, // text-sm
+    fontWeight: '500', // font-medium
+    color: colors.primary,
+    fontFamily: 'Epilogue-Medium',
   },
 });

@@ -10,5 +10,4 @@ export const moduleProje: IModuleModel = {
     baseUrl: baseUrl,
     description: 'Rest Manager',
   },
-
 };

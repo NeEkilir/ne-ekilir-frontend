@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  ImageStyle,
+} from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import styles from '../style/Style';
 import { tAxios } from '../call_config';
@@ -20,7 +27,7 @@ export default function Login({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const {  setUserInfo } = useUser();
+  const { setUserInfo } = useUser();
 
   const handleLogin = () => {
     tAxios
@@ -49,31 +56,48 @@ export default function Login({
 
   return (
     <View style={styles.logincontainer}>
-      <View style={styles.logocontainer}>
-        <Image source={require('../assets/main.png')} style={styles.logo} />
+      <View>
+        <View style={styles.logocontainer}>
+          <Image
+            source={require('../assets/main.png')}
+            style={styles.logo as ImageStyle}
+          />
+        </View>
+        <Text style={styles.logintitle}>Ne Ekilir?</Text>
+        <TextInput
+          placeholder="E-posta"
+          style={styles.logininput}
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <TextInput
+          placeholder="Şifre"
+          style={styles.logininputPassword}
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+        <View style={styles.loginforgotPasswordContainer}>
+          <TouchableOpacity onPress={() => console.log('Şifremi Unuttum')}>
+            <Text style={[styles.loginforgotPasswordText]}>
+              Şifremi Unuttum?
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.loginbutton} onPress={handleLogin}>
+          <Text style={styles.loginbuttonText}>Giriş Yap</Text>
+        </TouchableOpacity>
       </View>
-      <Text style={styles.logintitle}>Ne Ekilir?</Text>
-      <TextInput
-        placeholder="E-posta"
-        style={styles.logininput}
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <TextInput
-        placeholder="Şifre"
-        style={styles.logininput}
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <TouchableOpacity
-        style={styles.loginbutton}
-        onPress={handleLogin}
-      >
-        <Text style={styles.loginbuttonText}>Giriş Yap</Text>
-      </TouchableOpacity>
+      <View style={styles.loginfooter}>
+        <Text style={styles.loginfooterText}>
+          <Text style={styles.loginsubtle}>Hesabınız yok mu?</Text>
+          <TouchableOpacity style={{ marginTop: 7 }} onPress={() => {}}>
+            <Text style={styles.loginsignupTextLink}> Kayıt Ol</Text>
+          </TouchableOpacity>
+        </Text>
+      </View>
     </View>
   );
 }
