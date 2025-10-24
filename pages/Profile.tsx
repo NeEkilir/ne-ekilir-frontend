@@ -58,7 +58,6 @@ export default function Profile({
           <Text style={styles.profileemail}>{userInfo?.email}</Text>
         </View>
       </View>
-
       {isLogout && (
         <LogoutModal show={isLogout} onClose={() => setIsLogout(false)} />
       )}

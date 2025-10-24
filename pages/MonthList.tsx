@@ -61,13 +61,9 @@ export default function MonthList({
         headerLeft: () => (
           <TouchableOpacity
             style={{
-              // backgroundColor: styles.title.color,
-
               marginLeft: 10,
             }}
-          >
-            {/* <Icon name={'user'} color={styles.monthCard.backgroundColor} /> */}
-          </TouchableOpacity>
+          ></TouchableOpacity>
         ),
         headerRight: () => (
           <TouchableOpacity
@@ -157,7 +153,6 @@ export default function MonthList({
             <Text style={styles.suggestionText2}>{dailyPlanting}</Text>
           </View>
         )}
-
         {isSearchModal && (
           <SearchProductModal
             show={isSearchModal}

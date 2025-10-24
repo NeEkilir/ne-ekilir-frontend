@@ -5,8 +5,6 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
-  Modal,
-  Pressable,
 } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -18,10 +16,6 @@ import { RootStackParamList } from '../AppNavigator';
 import BottomNavBar from './layout/FooterNavBar';
 
 type ProductListRouteProp = RouteProp<RootStackParamList, 'Detay'>;
-type ProductListNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Detay'
->;
 
 export default function ProductList({
   route,

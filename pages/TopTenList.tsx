@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  ActivityIndicator,
-  TouchableOpacity,
-} from 'react-native';
-import axios from 'axios';
+import { View, Text, FlatList } from 'react-native';
 import { tAxios } from '../call_config';
 import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -15,10 +8,6 @@ import { RootStackParamList } from '../AppNavigator';
 import BottomNavBar from './layout/FooterNavBar';
 
 type TopTenListRouteProp = RouteProp<RootStackParamList, 'Top10'>;
-type TopTenListNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Top10'
->;
 
 export default function TopTenList({ route }: { route: TopTenListRouteProp }) {
   const [topTenProducts, setTopTenProducts] = useState<any[]>([]);

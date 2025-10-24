@@ -5,8 +5,6 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  Animated,
-  StyleSheet,
   ScrollView,
 } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';

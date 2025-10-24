@@ -14,14 +14,11 @@ import { tAxios } from '../call_config';
 import { DeletePlantingModal } from './modal/DeletePlantingModal';
 import { PlantingDetailModal } from './modal/PlantingDetailModal';
 import { useUser } from '../utils/UserContext';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import styles from '../style/Style';
 import { RootStackParamList } from '../AppNavigator';
 import { LogoutModal } from './modal/LogoutModal';
 import { Swipeable } from 'react-native-gesture-handler';
 import BottomNavBar from './layout/FooterNavBar';
 
-type HerbListRouteProp = RouteProp<RootStackParamList, 'BitkiListesi'>;
 type HerbListNavigationProp = StackNavigationProp<
   RootStackParamList,
   'BitkiListesi'
