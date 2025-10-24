@@ -8,6 +8,7 @@ import {
   Dimensions,
   ScrollView,
   StyleSheet,
+  SafeAreaView,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { tAxios } from '../call_config';
@@ -18,6 +19,7 @@ import { useUser } from '../utils/UserContext';
 import { LogoutModal } from './modal/LogoutModal';
 import { RootStackParamList } from '../AppNavigator';
 import { SearchProductModal } from './modal/SearchProductModal';
+import BottomNavBar from './layout/FooterNavBar';
 
 const numColumns = 3;
 const screenWidth = Dimensions.get('window').width;
@@ -55,21 +57,16 @@ export default function MonthList({
     if (navigation) {
       navigation.setOptions({
         headerTitle: 'Hangi Ayda Ne Ekilir?',
-        headerTitleAlign: 'center',
+        headerTitleAlign: 'left',
         headerLeft: () => (
           <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Profil');
-            }}
             style={{
-              backgroundColor: styles.title.color,
-              paddingVertical: 6,
-              paddingHorizontal: 12,
-              borderRadius: 8,
+              // backgroundColor: styles.title.color,
+
               marginLeft: 10,
             }}
           >
-            <Icon name={'user'} color={styles.monthCard.backgroundColor} />
+            {/* <Icon name={'user'} color={styles.monthCard.backgroundColor} /> */}
           </TouchableOpacity>
         ),
         headerRight: () => (
@@ -111,55 +108,64 @@ export default function MonthList({
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.grid}>
-        {months.map((month: any, index: any) => (
-          <TouchableOpacity
-            key={index}
-            style={{ ...styles.monthCard, width: itemWidth }}
-            onPress={() => navigation.navigate('Detay', { monthId: month?.id })}
-          >
-            <Text style={styles.monthText}>{month?.monthNameTr}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-      {dailyPlanting && (
-        <View style={styles.suggestionCard}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-          >
-            <View>
-              <Text style={styles.suggestionTitle}>🌿 Bugün İçin Öneri</Text>
-            </View>
-            <View>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('Top10');
-                }}
-                style={{
-                  backgroundColor: styles.title.color,
-                  paddingVertical: 6,
-                  paddingHorizontal: 12,
-                  borderRadius: 8,
-                }}
-              >
-                <Icon name={'star'} color={styles.monthCard.backgroundColor} />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <Text style={styles.suggestionText2}>{dailyPlanting}</Text>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.grid}>
+          {months.map((month: any, index: any) => (
+            <TouchableOpacity
+              key={index}
+              style={{ ...styles.monthCard, width: itemWidth }}
+              onPress={() =>
+                navigation.navigate('Detay', { monthId: month?.id })
+              }
+            >
+              <Text style={styles.monthText}>{month?.monthNameTr}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
-      )}
-      {isSearchModal && (
-        <SearchProductModal
-          show={isSearchModal}
-          onClose={() => setIsSearchModal(false)}
-        />
-      )}
-    </ScrollView>
+        {dailyPlanting && (
+          <View style={styles.suggestionCard}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <View>
+                <Text style={styles.suggestionTitle}>🌿 Bugün İçin Öneri</Text>
+              </View>
+              <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('Top10');
+                  }}
+                  style={{
+                    backgroundColor: styles.title.color,
+                    paddingVertical: 6,
+                    paddingHorizontal: 12,
+                    borderRadius: 8,
+                  }}
+                >
+                  <Icon
+                    name={'star'}
+                    color={styles.monthCard.backgroundColor}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <Text style={styles.suggestionText2}>{dailyPlanting}</Text>
+          </View>
+        )}
+
+        {isSearchModal && (
+          <SearchProductModal
+            show={isSearchModal}
+            onClose={() => setIsSearchModal(false)}
+          />
+        )}
+      </ScrollView>
+      <BottomNavBar activeRoute="Aylar" navigation={navigation} />
+    </SafeAreaView>
   );
 }

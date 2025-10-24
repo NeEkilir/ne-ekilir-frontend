@@ -15,6 +15,7 @@ import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
 import { Image } from 'react-native';
 import { AddRequestModal } from './modal/AddRequestModal';
 import { RootStackParamList } from '../AppNavigator';
+import BottomNavBar from './layout/FooterNavBar';
 
 type ProductListRouteProp = RouteProp<RootStackParamList, 'Detay'>;
 type ProductListNavigationProp = StackNavigationProp<
@@ -92,13 +93,15 @@ export default function ProductList({
           pathVariable: { id: monthId },
         })
         .then((res: any) => {
-          setProduct(
-            res.sort((a: any, b: any) =>
-              a.productNameTr.localeCompare(b.productNameTr, 'tr', {
-                sensitivity: 'base',
-              }),
-            ),
+          const tempData: any = res.sort((a: any, b: any) =>
+            a.productNameTr.localeCompare(b.productNameTr, 'tr', {
+              sensitivity: 'base',
+            }),
           );
+          tempData.push({
+            id: 'test',
+          });
+          setProduct(tempData);
         })
         .finally(() => setLoading(false));
     }
@@ -128,56 +131,71 @@ export default function ProductList({
       <View
         style={{
           flex: 1,
-          paddingTop: 10,
-          paddingLeft: 15,
-          paddingRight: 15,
-          paddingBottom: 10,
         }}
       >
-        <FlatList
-          data={product}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                padding: 15,
-                marginVertical: 8,
-                backgroundColor: '#eee',
-                borderRadius: 8,
-                justifyContent: 'space-between',
-              }}
-            >
-              <TouchableOpacity
-                style={{ flexDirection: 'row', alignItems: 'center' }}
-              >
-                <Image
-                  source={require('../assets/listResim.png')}
-                  style={{ width: 24, height: 24, marginRight: 10 }}
-                />
-                <Text style={{ fontSize: 18 }}>
-                  {item?.productNameTr || ''}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#4CAF50',
-                  paddingVertical: 6,
-                  paddingHorizontal: 10,
-                  borderRadius: 6,
-                }}
-                onPress={() => {
-                  navigation.navigate('Ürün', { productId: item.id });
-                }}
-              >
-                <Text style={{ color: 'white', fontSize: 14 }}>
-                  Nasıl Ekilir?
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        />
+        <View
+          style={{
+            flex: 1,
+            paddingTop: 10,
+            paddingLeft: 15,
+            paddingRight: 15,
+            paddingBottom: 10,
+          }}
+        >
+          <FlatList
+            data={product}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) =>
+              item?.id === 'test' ? (
+                <View
+                  style={{
+                    padding: 20,
+                  }}
+                ></View>
+              ) : (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    padding: 15,
+                    marginVertical: 8,
+                    backgroundColor: '#eee',
+                    borderRadius: 8,
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <TouchableOpacity
+                    style={{ flexDirection: 'row', alignItems: 'center' }}
+                  >
+                    <Image
+                      source={require('../assets/listResim.png')}
+                      style={{ width: 24, height: 24, marginRight: 10 }}
+                    />
+                    <Text style={{ fontSize: 18 }}>
+                      {item?.productNameTr || ''}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: '#4CAF50',
+                      paddingVertical: 6,
+                      paddingHorizontal: 10,
+                      borderRadius: 6,
+                    }}
+                    onPress={() => {
+                      navigation.navigate('Ürün', { productId: item.id });
+                    }}
+                  >
+                    <Text style={{ color: 'white', fontSize: 14 }}>
+                      Nasıl Ekilir?
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )
+            }
+          />
+        </View>
+        <BottomNavBar activeRoute="" navigation={navigation} />
       </View>
       {isShowRequestModal && (
         <AddRequestModal

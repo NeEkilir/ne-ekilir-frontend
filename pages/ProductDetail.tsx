@@ -21,6 +21,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import styles from '../style/Style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DeleteCommentModal } from './modal/DeleteCommentModal';
+import BottomNavBar from './layout/FooterNavBar';
 
 type ProductDetailRouteProp = RouteProp<RootStackParamList, 'Ürün'>;
 
@@ -147,32 +148,47 @@ export default function ProductDetail({
           paddingHorizontal: 10,
         }}
       >
-        <View style={{ flexDirection: 'row', marginTop: 11 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image
             source={require('../assets/listResim.png')}
-            style={{ width: 17, height: 17, marginTop: 2, marginRight: 8 }}
+            style={{ width: 17, height: 17, marginRight: 8 }}
           />
           <Text style={{ fontSize: 16, fontWeight: '400' }}>Nasıl Ekilir?</Text>
         </View>
+
+        <Text style={{ fontSize: 12, color: '#555' }}>
+          Puan:{' '}
+          <Text style={{ fontWeight: 'bold', fontSize: 13 }}>
+            {productAVGRate?.avgRate || 0}
+          </Text>
+        </Text>
       </View>
       <Text style={{ fontSize: 16, color: '#555', marginHorizontal: 10 }}>
         {productDetail?.plantedDetail}
       </Text>
-      <View>
-        <Text
+      <View style={{ margin: 3, display: 'flex', alignItems: 'flex-end' }}>
+        <TouchableOpacity
+          onPress={() => setIsShowCommentModal(true)}
           style={{
-            fontSize: 12,
-            color: '#555',
-            marginTop: 5,
-            marginRight: 15,
-            textAlign: 'right',
+            backgroundColor: '#363636a9',
+            paddingVertical: 4,
+            paddingHorizontal: 12,
+            borderRadius: 8,
+            width: 110,
           }}
         >
-          {'Puan: '}
-          <Text style={{ fontWeight: 'bold' }}>
-            {productAVGRate?.avgRate || 0}
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 14,
+              fontWeight: 'bold',
+              textAlign: 'center',
+              marginBottom: 3,
+            }}
+          >
+            + Yorum Yap
           </Text>
-        </Text>
+        </TouchableOpacity>
       </View>
       <View style={{ marginTop: 0 }}>
         <View
@@ -223,174 +239,147 @@ export default function ProductDetail({
           ))}
         </View>
       </View>
-      <View style={{ flex: 1, padding: 5 }}>
-        {activeTab === 'comments' && (
-          <>
-            {!commentList?.length && (
-              <View>
-                <Text>Henüz yorum yapılmamış..</Text>
-              </View>
-            )}
-            <FlatList
-              data={commentList}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item }) => (
-                <View
-                  key={item?.id}
-                  style={{
-                    backgroundColor: '#fff',
-                    borderRadius: 8,
-                    padding: 10,
-                    marginBottom: 10,
-                    margin: 2,
-                    shadowColor: '#000',
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.1,
-                    shadowRadius: 3,
-                    elevation: 2,
-                  }}
-                >
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginTop: 5,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 15,
-                        fontStyle: 'italic',
-                        marginBottom: 5,
-                      }}
-                    >
-                      {item?.commentHeader}
-                    </Text>
-                    {userInfo?.id === item?.userId?.id && (
-                      <TouchableOpacity
-                        style={{
-                          paddingVertical: 2,
-                          paddingHorizontal: 3,
-                          borderRadius: 6,
-                          borderWidth: 1,
-                          borderColor: '#F44336',
-                        }}
-                        onPress={() => {
-                          setShowDeleteCommentModal(item?.id);
-                        }}
-                      >
-                        <Icon name={'trash'} size={16} color="#F44336" />
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                  <Text style={{ fontSize: 14, color: '#777' }}>
-                    {item?.commentDetail}
-                  </Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginTop: 5,
-                    }}
-                  >
-                    <Text style={{ fontSize: 10, color: '#777' }}>
-                      Kullanıcı:{' '}
-                      <Text style={{ fontStyle: 'italic' }}>
-                        {item.userId?.userName}
-                      </Text>
-                    </Text>
-                    <Text style={{ fontSize: 10, color: '#999' }}>
-                      {item.createTime &&
-                        format(new Date(item.createTime), 'dd.MM.yyyy HH:mm')}
-                    </Text>
-                  </View>
+      <View style={{ flex: 1 }}>
+        <View style={{ padding: 5, marginBottom: 40 }}>
+          {activeTab === 'comments' && (
+            <>
+              {!commentList?.length && (
+                <View>
+                  <Text>Henüz yorum yapılmamış..</Text>
                 </View>
               )}
-            />
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => setIsShowCommentModal(true)}
-                style={{
-                  backgroundColor: '#363636a9',
-                  paddingVertical: 4,
-                  paddingHorizontal: 12,
-                  borderTopLeftRadius: 8,
-                  borderTopRightRadius: 8,
-                  width: '100%',
+              <FlatList
+                data={commentList}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                  <View
+                    key={item?.id}
+                    style={{
+                      backgroundColor: '#fff',
+                      borderRadius: 8,
+                      padding: 10,
+                      marginBottom: 10,
+                      margin: 2,
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.1,
+                      shadowRadius: 3,
+                      elevation: 2,
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginTop: 5,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 15,
+                          fontStyle: 'italic',
+                          marginBottom: 5,
+                        }}
+                      >
+                        {item?.commentHeader}
+                      </Text>
+                      {userInfo?.id === item?.userId?.id && (
+                        <TouchableOpacity
+                          style={{
+                            paddingVertical: 2,
+                            paddingHorizontal: 3,
+                            borderRadius: 6,
+                            borderWidth: 1,
+                            borderColor: '#F44336',
+                          }}
+                          onPress={() => {
+                            setShowDeleteCommentModal(item?.id);
+                          }}
+                        >
+                          <Icon name={'trash'} size={16} color="#F44336" />
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                    <Text style={{ fontSize: 14, color: '#777' }}>
+                      {item?.commentDetail}
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginTop: 5,
+                      }}
+                    >
+                      <Text style={{ fontSize: 10, color: '#777' }}>
+                        Kullanıcı:{' '}
+                        <Text style={{ fontStyle: 'italic' }}>
+                          {item.userId?.userName}
+                        </Text>
+                      </Text>
+                      <Text style={{ fontSize: 10, color: '#999' }}>
+                        {item.createTime &&
+                          format(new Date(item.createTime), 'dd.MM.yyyy HH:mm')}
+                      </Text>
+                    </View>
+                  </View>
+                )}
+              />
+            </>
+          )}
+          {activeTab === 'beneficials' && (
+            <View style={{ alignItems: 'center', marginTop: 0 }}>
+              <ScrollView
+                contentContainerStyle={{
+                  paddingLeft: 5,
+                  paddingRight: 10,
                 }}
+                showsVerticalScrollIndicator={true}
               >
-                <Text
-                  style={{
-                    color: '#fff',
-                    fontSize: 14,
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    marginBottom: 3,
-                  }}
-                >
-                  + Yorum Yap
+                <Text style={{ color: '#000000ff' }}>
+                  <View style={styles.listContainer}>
+                    {beneficialList?.map((x: any, i: any) => {
+                      return (
+                        x && (
+                          <View key={i} style={styles.listItem}>
+                            <Text style={styles.listBullet}>{'\u2022'}</Text>
+                            <Text style={styles.listText}>{x}</Text>
+                          </View>
+                        )
+                      );
+                    })}
+                  </View>
                 </Text>
-              </TouchableOpacity>
+              </ScrollView>
             </View>
-          </>
-        )}
-        {activeTab === 'beneficials' && (
-          <View style={{ alignItems: 'center', marginTop: 0 }}>
-            <ScrollView
-              contentContainerStyle={{
-                paddingLeft: 5,
-                paddingRight: 10,
-              }}
-              showsVerticalScrollIndicator={true}
-            >
-              <Text style={{ color: '#000000ff' }}>
-                <View style={styles.listContainer}>
-                  {beneficialList?.map((x: any, i: any) => {
-                    return (
-                      x && (
-                        <View key={i} style={styles.listItem}>
-                          <Text style={styles.listBullet}>{'\u2022'}</Text>
-                          <Text style={styles.listText}>{x}</Text>
-                        </View>
-                      )
-                    );
-                  })}
-                </View>
-              </Text>
-            </ScrollView>
-          </View>
-        )}
-        {activeTab === 'detrimentals' && (
-          <View style={{ alignItems: 'center', marginTop: 0 }}>
-            <ScrollView
-              contentContainerStyle={{
-                paddingLeft: 5,
-                paddingRight: 10,
-              }}
-              showsVerticalScrollIndicator={true}
-            >
-              <Text style={{ color: '#000000ff' }}>
-                <View style={styles.listContainer}>
-                  {detrimentalList?.map((x: any, i: any) => {
-                    return (
-                      x && (
-                        <View key={i} style={styles.listItem}>
-                          <Text style={styles.listBulletRed}>{'\u2022'}</Text>
-                          <Text style={styles.listText}>{x}</Text>
-                        </View>
-                      )
-                    );
-                  })}
-                </View>
-              </Text>
-            </ScrollView>
-          </View>
-        )}
+          )}
+          {activeTab === 'detrimentals' && (
+            <View style={{ alignItems: 'center', marginTop: 0 }}>
+              <ScrollView
+                contentContainerStyle={{
+                  paddingLeft: 5,
+                  paddingRight: 10,
+                }}
+                showsVerticalScrollIndicator={true}
+              >
+                <Text style={{ color: '#000000ff' }}>
+                  <View style={styles.listContainer}>
+                    {detrimentalList?.map((x: any, i: any) => {
+                      return (
+                        x && (
+                          <View key={i} style={styles.listItem}>
+                            <Text style={styles.listBulletRed}>{'\u2022'}</Text>
+                            <Text style={styles.listText}>{x}</Text>
+                          </View>
+                        )
+                      );
+                    })}
+                  </View>
+                </Text>
+              </ScrollView>
+            </View>
+          )}
+        </View>
+        <BottomNavBar activeRoute="" navigation={navigation} />
       </View>
       {isShowAddProfileModal && (
         <AddProfileProductModal

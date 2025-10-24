@@ -10,6 +10,7 @@ import { getTokens } from './utils/SecureStorage';
 import Login from './pages/Login';
 import SplashPage from './pages/SplashPage';
 import { useUser } from './utils/UserContext';
+import HerbList from './pages/HerbList';
 
 export type RootStackParamList = {
   Aylar: undefined;
@@ -19,6 +20,7 @@ export type RootStackParamList = {
   Profil: undefined;
   Login: undefined;
   Splash: undefined;
+  BitkiListesi: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -46,6 +48,7 @@ export function AppNavigator() {
           <Stack.Screen name="Ürün" component={ProductDetail} />
           <Stack.Screen name="Top10" component={TopTenList} />
           <Stack.Screen name="Profil" component={Profile} />
+          <Stack.Screen name="BitkiListesi" component={HerbList} />
         </>
       ) : isLogin === false ? (
         <Stack.Screen name="Login" options={{ headerShown: false }}>

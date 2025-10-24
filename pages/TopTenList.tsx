@@ -12,6 +12,7 @@ import { RestManagerApiList } from '../call_config/api-list/RestManagerApiList';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../AppNavigator';
+import BottomNavBar from './layout/FooterNavBar';
 
 type TopTenListRouteProp = RouteProp<RootStackParamList, 'Top10'>;
 type TopTenListNavigationProp = StackNavigationProp<
@@ -40,57 +41,72 @@ export default function TopTenList({ route }: { route: TopTenListRouteProp }) {
   }, [navigation]);
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
-      <FlatList
-        data={topTenProducts}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => (
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingVertical: 10,
-              borderBottomWidth: 1,
-              borderColor: '#ddd',
-            }}
-          >
-            <Text
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
+      <View
+        style={{
+          paddingTop: 10,
+          paddingBottom: 10,
+          paddingLeft: 20,
+          paddingRight: 20,
+          marginBottom: 45,
+        }}
+      >
+        <FlatList
+          data={topTenProducts}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index }) => (
+            <View
               style={{
-                fontSize: 18,
-                fontWeight: 'bold',
-                width: 30,
-                color: index + 1 === 1 ? 'green' : '',
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingVertical: 10,
+                borderBottomWidth: 1,
+                borderColor: '#ddd',
               }}
             >
-              {index + 1}.
-            </Text>
-            <Text
-              style={{
-                fontSize: 18,
-                color:
-                  index + 1 === 1
-                    ? '#006600'
-                    : index + 1 === 2
-                    ? '#009900'
-                    : index + 1 === 3
-                    ? '#00CC00'
-                    : '',
-              }}
-            >
-              <Text>
-                <Text>{item?.productName + ' | '}</Text>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {item?.avgRate}
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  width: 30,
+                  color: index + 1 === 1 ? 'green' : '',
+                }}
+              >
+                {index + 1}.
+              </Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color:
+                    index + 1 === 1
+                      ? '#006600'
+                      : index + 1 === 2
+                      ? '#009900'
+                      : index + 1 === 3
+                      ? '#00CC00'
+                      : '',
+                }}
+              >
+                <Text>
+                  <Text>{item?.productName + ' | '}</Text>
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {item?.avgRate}
+                  </Text>
                 </Text>
               </Text>
-            </Text>
-          </View>
-        )}
-      />
+            </View>
+          )}
+        />
+      </View>
+      <BottomNavBar activeRoute="" navigation={navigation} />
     </View>
   );
 }
