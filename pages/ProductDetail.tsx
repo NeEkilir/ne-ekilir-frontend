@@ -170,16 +170,18 @@ export default function ProductDetail({
         <TouchableOpacity
           onPress={() => setIsShowCommentModal(true)}
           style={{
-            backgroundColor: '#363636a9',
-            paddingVertical: 4,
-            paddingHorizontal: 12,
+            borderColor: '#363636a9',
+            borderWidth: 1,
+            borderBottomWidth: 1,
+            paddingVertical: 2,
+            paddingHorizontal: 10,
             borderRadius: 8,
             width: 110,
           }}
         >
           <Text
             style={{
-              color: '#fff',
+              color: '#363636a9',
               fontSize: 14,
               fontWeight: 'bold',
               textAlign: 'center',
